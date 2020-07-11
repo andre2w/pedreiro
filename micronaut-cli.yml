@@ -1,0 +1,6 @@
+applicationType: cli
+defaultPackage: com.github.andre2w
+testFramework: junit
+sourceLanguage: kotlin
+buildTool: gradle
+features: [annotation-api, app-name, docker, file-watch, graalvm, gradle, http-client, junit, kotlin, kotlin-extension-functions, logback, picocli, picocli-junit, picocli-kotlin-application, readme, shade, yaml]

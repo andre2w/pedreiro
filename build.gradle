@@ -1,0 +1,188 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.3.72"
+    id "org.jetbrains.kotlin.kapt" version "1.3.72"
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.3.72"
+    id "com.github.johnrengelman.shadow" version "6.0.0"
+    id "application"
+    id 'idea'
+}
+
+version "0.1"
+group "com.github.andre2w"
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+configurations {
+    // for dependencies that are needed for development only
+    developmentOnly
+
+    acceptanceTestCompile.extendsFrom testCompile
+    acceptanceTestRuntime.extendsFrom testRuntime
+
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+
+sourceSets {
+    acceptanceTest {
+        kotlin {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file("src/acceptanceTest/kotlin")
+        }
+        resources.srcDir file("src/acceptanceTest/resources")
+    }
+
+    integrationTest {
+        kotlin {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file("src/integrationTest/kotlin")
+        }
+        resources.srcDir file("src/integrationTest/resources")
+    }
+}
+
+
+dependencies {
+    kapt(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    kapt("io.micronaut:micronaut-inject-java")
+    kapt("io.micronaut:micronaut-validation")
+    kapt("io.micronaut:micronaut-graal")
+    kapt("info.picocli:picocli-codegen:4.2.0")
+    compileOnly(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    compileOnly("org.graalvm.nativeimage:svm")
+    implementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    implementation("io.micronaut:micronaut-inject")
+    implementation("io.micronaut:micronaut-validation")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+    implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("info.picocli:picocli")
+    implementation("io.micronaut.picocli:micronaut-picocli")
+    implementation("javax.annotation:javax.annotation-api")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
+    kaptTest(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    kaptTest("io.micronaut:micronaut-inject-java")
+    testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("io.micronaut.test:micronaut-test-junit5")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+
+    acceptanceTestImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    acceptanceTestImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    acceptanceTestImplementation("org.junit.jupiter:junit-jupiter-api")
+    acceptanceTestImplementation("io.micronaut.test:micronaut-test-junit5")
+    acceptanceTestRuntime("org.junit.jupiter:junit-jupiter-engine")
+    acceptanceTestImplementation("info.picocli:picocli")
+    acceptanceTestImplementation("io.micronaut.picocli:micronaut-picocli")
+}
+
+task acceptanceTest(type: Test) {
+    testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
+    classpath = sourceSets.acceptanceTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
+task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
+
+test.classpath += configurations.developmentOnly
+
+mainClassName = "com.github.andre2w.PedreiroCommand"
+
+// use JUnit 5 platform
+test {
+    useJUnitPlatform()
+}
+acceptanceTest {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
+integrationTest {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion('11')
+}
+
+allOpen {
+    annotation("io.micronaut.aop.Around")
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = '11'
+        //Will retain parameter names for Java reflection
+        javaParameters = true
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = '11'
+        javaParameters = true
+    }
+}
+
+compileAcceptanceTestKotlin {
+    kotlinOptions {
+        jvmTarget = '11'
+        javaParameters = true
+    }
+}
+
+kapt {
+    arguments {
+        arg("micronaut.processing.incremental", true)
+        arg("micronaut.processing.annotations", "com.github.andre2w.*")
+        arg("micronaut.processing.group", "com.github.andre2w")
+        arg("micronaut.processing.module", "pedreiro")
+    }
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+tasks.withType(JavaExec) {
+    classpath += configurations.developmentOnly
+    jvmArgs('-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+    if (gradle.startParameter.continuous) {
+        systemProperties(
+            'micronaut.io.watch.restart':'true',
+            'micronaut.io.watch.enabled':'true',
+            "micronaut.io.watch.paths":"src/main"
+        )
+    }
+}
+
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test
+
+check.dependsOn acceptanceTest
+acceptanceTest.mustRunAfter integrationTest
+
+idea {
+    module {
+        testSourceDirs += project.sourceSets.integrationTest.kotlin.srcDirs
+        testSourceDirs += project.sourceSets.integrationTest.resources.srcDirs
+        testSourceDirs += project.sourceSets.acceptanceTest.kotlin.srcDirs
+        testSourceDirs += project.sourceSets.acceptanceTest.resources.srcDirs
+    }
+}
+
