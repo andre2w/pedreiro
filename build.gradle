@@ -72,9 +72,11 @@ dependencies {
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
     kaptTest(platform("io.micronaut:micronaut-bom:$micronautVersion"))
     kaptTest("io.micronaut:micronaut-inject-java")
+
     testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.micronaut.test:micronaut-test-junit5")
+    testImplementation "io.mockk:mockk:1.9.3.kotlin12"
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 
     acceptanceTestImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
@@ -185,4 +187,8 @@ idea {
         testSourceDirs += project.sourceSets.acceptanceTest.resources.srcDirs
     }
 }
-
+allOpen {
+    annotation("com.my.Annotation")
+    
+    // annotations("com.another.Annotation", "com.third.Annotation")
+}

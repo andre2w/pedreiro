@@ -3,24 +3,30 @@ package com.github.andre2w
 import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions
 
 class PedreiroCommandTest {
 
     @Test
     fun testWithCommandLineOption() {
         val ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)
-        val baos = ByteArrayOutputStream()
-        System.setOut(PrintStream(baos))
+        val pedreiro = mockk<Pedreiro>(relaxUnitFun = true)
 
-        val args = arrayOf("-v")
+        ctx.registerSingleton(pedreiro)
+        val args = arrayOf("testBlueprint", "--arg", "test=blueprint", "--arg", "other=field", "--arg", "other=field")
         PicocliRunner.run(PedreiroCommand::class.java, ctx, *args)
 
-        Assertions.assertTrue(baos.toString().contains("Hi!"))
-
         ctx.close()
+
+        verify {
+            pedreiro.build(Arguments("testBlueprint", mapOf(
+                    "test" to "blueprint",
+                    "other" to "field"
+            )))
+        }
     }
+
+
 }
