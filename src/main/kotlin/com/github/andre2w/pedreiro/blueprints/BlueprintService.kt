@@ -1,11 +1,10 @@
-package com.github.andre2w.blueprints
+package com.github.andre2w.pedreiro.blueprints
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.github.andre2w.Arguments
-import com.github.andre2w.environment.FileSystemHandler
-import com.github.andre2w.environment.LocalEnvironment
-import com.github.andre2w.environment.ProcessExecutor
-import com.github.andre2w.tasks.*
+import com.github.andre2w.pedreiro.Arguments
+import com.github.andre2w.pedreiro.environment.FileSystemHandler
+import com.github.andre2w.pedreiro.environment.LocalEnvironment
+import com.github.andre2w.pedreiro.environment.ProcessExecutor
+import com.github.andre2w.pedreiro.tasks.*
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.parser.ParserException
 import javax.inject.Singleton

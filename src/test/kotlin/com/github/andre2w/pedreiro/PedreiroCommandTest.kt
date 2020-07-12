@@ -1,4 +1,4 @@
-package com.github.andre2w
+package com.github.andre2w.pedreiro
 
 import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.context.ApplicationContext

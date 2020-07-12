@@ -1,7 +1,7 @@
-package com.github.andre2w.tasks
+package com.github.andre2w.pedreiro.tasks
 
-import com.github.andre2w.environment.FileSystemHandler
-import com.github.andre2w.environment.LocalEnvironment
+import com.github.andre2w.pedreiro.environment.FileSystemHandler
+import com.github.andre2w.pedreiro.environment.LocalEnvironment
 
 data class CreateFile(
         val path: String,

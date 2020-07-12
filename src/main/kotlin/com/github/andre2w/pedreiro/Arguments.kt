@@ -1,6 +1,8 @@
-package com.github.andre2w
+package com.github.andre2w.pedreiro
 
 data class Arguments(val blueprintName: String, val extraArguments: Map<String, String>) {
+
+    constructor(blueprintName: String) : this(blueprintName, emptyMap())
 
     fun mergeWith(argsToMerge: Map<String,String>): Arguments {
         val mergedArguments = HashMap<String, String>()

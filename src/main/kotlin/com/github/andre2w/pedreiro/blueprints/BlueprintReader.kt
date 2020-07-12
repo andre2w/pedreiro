@@ -1,19 +1,17 @@
-package com.github.andre2w.blueprints
+package com.github.andre2w.pedreiro.blueprints
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.andre2w.Arguments
-import com.github.andre2w.configuration.PedreiroConfiguration
-import com.github.andre2w.environment.ConsoleHandler
-import com.github.andre2w.environment.FileSystemHandler
+import com.github.andre2w.pedreiro.Arguments
+import com.github.andre2w.pedreiro.configuration.PedreiroConfiguration
+import com.github.andre2w.pedreiro.environment.ConsoleHandler
+import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.jknack.handlebars.Handlebars
+import org.yaml.snakeyaml.Yaml
 import javax.inject.Singleton
 
 @Singleton
 class BlueprintReader(
         private val fileSystemHandler: FileSystemHandler,
         private val consoleHandler: ConsoleHandler,
-        private val objectMapper: ObjectMapper,
         private val configuration: PedreiroConfiguration
 ) {
     private val handlebars: Handlebars = Handlebars()
@@ -52,8 +50,8 @@ class BlueprintReader(
         return try {
             val variablesFile = loadFromFile("$blueprintPath/variables", arguments)
 
-            val variables = objectMapper.readValue(variablesFile.toByteArray(),
-                    object: TypeReference<Map<String, String>>() {} )
+            val yaml = Yaml()
+            val variables = yaml.load<Map<String,String>>(variablesFile)
             arguments.mergeWith(variables)
         } catch (err : BlueprintParsingException) {
             arguments

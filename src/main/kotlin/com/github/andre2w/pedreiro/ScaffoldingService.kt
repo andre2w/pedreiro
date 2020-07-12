@@ -1,7 +1,7 @@
-package com.github.andre2w
+package com.github.andre2w.pedreiro
 
-import com.github.andre2w.tasks.Task
-import com.github.andre2w.tasks.Tasks
+import com.github.andre2w.pedreiro.tasks.Task
+import com.github.andre2w.pedreiro.tasks.Tasks
 import javax.inject.Singleton
 
 @Singleton

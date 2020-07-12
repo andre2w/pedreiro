@@ -1,6 +1,6 @@
-package com.github.andre2w.environment
+package com.github.andre2w.pedreiro.environment
 
-import com.github.andre2w.tasks.CommandParser
+import com.github.andre2w.pedreiro.tasks.CommandParser
 import java.io.File
 import javax.inject.Singleton
 

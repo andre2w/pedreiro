@@ -1,4 +1,4 @@
-package com.github.andre2w.environment
+package com.github.andre2w.pedreiro.environment
 
 import javax.inject.Singleton
 

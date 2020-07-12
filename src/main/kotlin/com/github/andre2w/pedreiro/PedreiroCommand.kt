@@ -1,7 +1,7 @@
-package com.github.andre2w
+package com.github.andre2w.pedreiro
 
-import com.github.andre2w.blueprints.BlueprintParsingException
-import com.github.andre2w.environment.ConsoleHandler
+import com.github.andre2w.pedreiro.blueprints.BlueprintParsingException
+import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import io.micronaut.configuration.picocli.PicocliRunner
 import picocli.CommandLine.*
 import javax.inject.Inject
@@ -29,8 +29,10 @@ class PedreiroCommand : Runnable {
     override fun run() {
         try {
             pedreiro.build(Arguments(blueprintName, extraVariables))
+            consoleHandler.print("Project created. You can start to work now.")
             consoleHandler.exitWith(0)
         } catch (err: BlueprintParsingException) {
+            consoleHandler.print(err.message ?: "Error while parsing blueprint")
             consoleHandler.exitWith(1)
         }
     }

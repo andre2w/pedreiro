@@ -1,6 +1,6 @@
-package com.github.andre2w
+package com.github.andre2w.pedreiro
 
-import com.github.andre2w.blueprints.BlueprintService
+import com.github.andre2w.pedreiro.blueprints.BlueprintService
 import javax.inject.Singleton
 
 @Singleton

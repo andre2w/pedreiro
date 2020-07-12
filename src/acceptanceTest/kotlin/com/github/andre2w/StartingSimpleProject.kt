@@ -1,9 +1,10 @@
 package com.github.andre2w
 
-import com.github.andre2w.environment.ConsoleHandler
-import com.github.andre2w.environment.FileSystemHandler
-import com.github.andre2w.environment.LocalEnvironment
-import com.github.andre2w.environment.ProcessExecutor
+import com.github.andre2w.pedreiro.PedreiroCommand
+import com.github.andre2w.pedreiro.environment.ConsoleHandler
+import com.github.andre2w.pedreiro.environment.FileSystemHandler
+import com.github.andre2w.pedreiro.environment.LocalEnvironment
+import com.github.andre2w.pedreiro.environment.ProcessExecutor
 import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
