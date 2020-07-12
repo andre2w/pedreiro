@@ -68,16 +68,18 @@ dependencies {
     implementation("javax.annotation:javax.annotation-api")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut.kotlin:micronaut-kotlin-extension-functions")
+    implementation("io.micronaut.views:micronaut-views-handlebars")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.10.3")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
-    kaptTest(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    kaptTest("io.micronaut:micronaut-inject-java")
 
     testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.micronaut.test:micronaut-test-junit5")
-    testImplementation "io.mockk:mockk:1.9.3.kotlin12"
+    testImplementation("io.mockk:mockk:1.9.3.kotlin12")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    kaptTest("io.micronaut:micronaut-inject-java")
+    kaptTest(platform("io.micronaut:micronaut-bom:$micronautVersion"))
 
     acceptanceTestImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     acceptanceTestImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
@@ -86,6 +88,11 @@ dependencies {
     acceptanceTestRuntime("org.junit.jupiter:junit-jupiter-engine")
     acceptanceTestImplementation("info.picocli:picocli")
     acceptanceTestImplementation("io.micronaut.picocli:micronaut-picocli")
+    acceptanceTestImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
+    acceptanceTestImplementation("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
+    acceptanceTestImplementation("org.assertj:assertj-core:3.11.1")
+    acceptanceTestImplementation("io.mockk:mockk:1.9.3.kotlin12")
+    acceptanceTestImplementation("io.micronaut.views:micronaut-views-handlebars")
 }
 
 task acceptanceTest(type: Test) {

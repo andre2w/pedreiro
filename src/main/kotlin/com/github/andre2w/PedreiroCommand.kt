@@ -1,5 +1,7 @@
 package com.github.andre2w
 
+import com.github.andre2w.blueprints.BlueprintParsingException
+import com.github.andre2w.environment.ConsoleHandler
 import io.micronaut.configuration.picocli.PicocliRunner
 import picocli.CommandLine.*
 import javax.inject.Inject
@@ -21,8 +23,16 @@ class PedreiroCommand : Runnable {
     @Inject
     private lateinit var pedreiro : Pedreiro
 
+    @Inject
+    private lateinit var consoleHandler: ConsoleHandler
+
     override fun run() {
-        pedreiro.build(Arguments(blueprintName, extraVariables))
+        try {
+            pedreiro.build(Arguments(blueprintName, extraVariables))
+            consoleHandler.exitWith(0)
+        } catch (err: BlueprintParsingException) {
+            consoleHandler.exitWith(1)
+        }
     }
 
     companion object {

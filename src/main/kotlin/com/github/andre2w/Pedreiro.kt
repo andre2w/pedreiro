@@ -1,12 +1,17 @@
 package com.github.andre2w
 
+import com.github.andre2w.blueprints.BlueprintService
 import javax.inject.Singleton
 
 @Singleton
-class Pedreiro {
+class Pedreiro(
+        private val blueprintService: BlueprintService,
+        private val scaffoldingService: ScaffoldingService
+) {
 
     fun build(arguments: Arguments) {
-        TODO("Not yet implemented")
+        val tasks = blueprintService.loadBlueprint(arguments)
+        scaffoldingService.execute(tasks)
     }
 
 }
