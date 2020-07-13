@@ -1,7 +1,6 @@
 package com.github.andre2w.pedreiro.environment
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -10,23 +9,22 @@ import java.time.format.DateTimeFormatter
 
 class FileSystemHandlerShould {
 
-    private val fileContent = """
-        ---
-        - name: project
-          type: folder
-          children:
-            - name: build.gradle
-              type: file
-              content: |
-                apply plugin: kotlin
-    """.trimIndent()
+    private val fileContent =
+            "---" + System.lineSeparator() +
+                    "- name: project" + System.lineSeparator() +
+                    "type: folder" + System.lineSeparator() +
+                    "children:" + System.lineSeparator() +
+                    "- name: build.gradle" + System.lineSeparator() +
+                    "type: file" + System.lineSeparator() +
+                    "content: |" + System.lineSeparator() +
+                    "apply plugin: kotlin"
 
-    private val filePath = "${System.getProperty("user.dir")}/temptestfile.txt"
-    private val path = Paths.get(filePath)
     private val fileSystemHandler = FileSystemHandler()
 
     @Test
     fun `create file with contents`() {
+        val filePath = "${System.getProperty("user.dir")}/temptestfile-${rightNow()}.txt"
+        val path = Paths.get(filePath)
         fileSystemHandler.createFile(filePath, fileContent)
 
         val readString = String(Files.readAllBytes(path))
@@ -36,8 +34,9 @@ class FileSystemHandlerShould {
     }
 
     @Test
-    @Disabled
     fun `read file contents`() {
+        val filePath = "${System.getProperty("user.dir")}/temptestfile-${rightNow()}.txt"
+        val path = Paths.get(filePath)
         Files.write(path, fileContent.toByteArray())
 
         val readContent = fileSystemHandler.readFile(filePath)
@@ -57,8 +56,9 @@ class FileSystemHandlerShould {
     }
 
     @Test
-    @Disabled
     fun `return null when file is not found`() {
+        val filePath = "${System.getProperty("user.dir")}/temptestfile-${rightNow()}.txt"
+
         val readContent = fileSystemHandler.readFile(filePath)
 
         assertThat(readContent).isNull()
@@ -89,9 +89,8 @@ class FileSystemHandlerShould {
     }
 
     private fun rightNow(): String {
-        val format = DateTimeFormatter.ofPattern("YYYY-MM-dd-hhmmss")
+        val format = DateTimeFormatter.ofPattern("YYYY-MM-dd-hhmmssSSS")
         return LocalDateTime.now().format(format)
     }
 
 }
-
