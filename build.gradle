@@ -193,8 +193,3 @@ idea {
         testSourceDirs += project.sourceSets.acceptanceTest.resources.srcDirs
     }
 }
-allOpen {
-    annotation("com.my.Annotation")
-    
-    // annotations("com.another.Annotation", "com.third.Annotation")
-}

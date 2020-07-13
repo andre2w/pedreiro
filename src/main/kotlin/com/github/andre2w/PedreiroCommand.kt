@@ -1,8 +1,11 @@
-package com.github.andre2w.pedreiro
+package com.github.andre2w
 
+import com.github.andre2w.pedreiro.Arguments
+import com.github.andre2w.pedreiro.Pedreiro
 import com.github.andre2w.pedreiro.blueprints.BlueprintParsingException
 import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import io.micronaut.configuration.picocli.PicocliRunner
+import io.micronaut.core.annotation.TypeHint
 import picocli.CommandLine.*
 import javax.inject.Inject
 
@@ -21,10 +24,10 @@ class PedreiroCommand : Runnable {
     private var extraVariables : Map<String,String> = emptyMap()
 
     @Inject
-    private lateinit var pedreiro : Pedreiro
+    lateinit var pedreiro : Pedreiro
 
     @Inject
-    private lateinit var consoleHandler: ConsoleHandler
+    lateinit var consoleHandler: ConsoleHandler
 
     override fun run() {
         try {

@@ -1,6 +1,5 @@
 package com.github.andre2w
 
-import com.github.andre2w.pedreiro.PedreiroCommand
 import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
@@ -11,7 +10,6 @@ import io.micronaut.context.env.Environment
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import io.mockk.verifyOrder
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 

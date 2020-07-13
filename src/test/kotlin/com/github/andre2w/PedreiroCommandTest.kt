@@ -1,5 +1,7 @@
-package com.github.andre2w.pedreiro
+package com.github.andre2w
 
+import com.github.andre2w.pedreiro.Arguments
+import com.github.andre2w.pedreiro.Pedreiro
 import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
