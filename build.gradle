@@ -80,6 +80,13 @@ dependencies {
     kaptTest("io.micronaut:micronaut-inject-java")
     kaptTest(platform("io.micronaut:micronaut-bom:$micronautVersion"))
 
+    integrationTestImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    integrationTestImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    integrationTestImplementation("org.junit.jupiter:junit-jupiter-api")
+    integrationTestImplementation("io.micronaut.test:micronaut-test-junit5")
+    integrationTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    integrationTestImplementation("org.assertj:assertj-core:3.11.1")
+
     acceptanceTestImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     acceptanceTestImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
     acceptanceTestImplementation("org.junit.jupiter:junit-jupiter-api")
@@ -146,8 +153,13 @@ compileTestKotlin {
         javaParameters = true
     }
 }
-
 compileAcceptanceTestKotlin {
+    kotlinOptions {
+        jvmTarget = '11'
+        javaParameters = true
+    }
+}
+compileIntegrationTestKotlin {
     kotlinOptions {
         jvmTarget = '11'
         javaParameters = true
