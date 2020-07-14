@@ -4,8 +4,8 @@ import com.github.andre2w.pedreiro.environment.LocalEnvironment
 import com.github.andre2w.pedreiro.environment.ProcessExecutor
 
 data class ExecuteCommand(
-        val command: String,
-        val folder: String,
+        private val command: String,
+        private val folder: String,
         private val processExecutor: ProcessExecutor,
         private val environment: LocalEnvironment
 ) : Task {
