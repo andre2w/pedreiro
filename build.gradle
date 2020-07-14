@@ -119,6 +119,9 @@ mainClassName = "com.github.andre2w.PedreiroCommand"
 // use JUnit 5 platform
 test {
     useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
 acceptanceTest {
     useJUnitPlatform()
