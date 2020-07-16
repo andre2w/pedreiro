@@ -45,7 +45,7 @@ object BlueprintFromFolder : Spek({
             every { fileSystemHandler.isFolder(blueprintPath) } returns true
             every { fileSystemHandler.readFile("$blueprintPath/blueprint.yml") } returns fixtures("template")
             every { fileSystemHandler.readFile("$blueprintPath/variables.yml") } returns fixtures("variables")
-            every { fileSystemHandler.readFile("$blueprintPath/build.gradle") } returns fixtures("build_gradle_template")
+            every { fileSystemHandler.readFile("$blueprintPath/build.gradle") } returns fixtures("build_gradle_template.txt")
             every { fileSystemHandler.isFolder("$homeDir/.pedreiro/blueprints/$blueprintName") } returns true
             every { fileSystemHandler.listFilesIn("$homeDir/.pedreiro/blueprints/$blueprintName") } returns listOf("build.gradle")
 
@@ -58,7 +58,7 @@ object BlueprintFromFolder : Spek({
                     fileSystemHandler.createFolder("$baseDir/test/src/main")
                     fileSystemHandler.createFolder("${baseDir}/test/src/main/kotlin")
                     fileSystemHandler.createFolder("${baseDir}/test/src/main/resources")
-                    fileSystemHandler.createFile("${baseDir}/test/build.gradle", ignoringLineEnding(fixtures("build_gradle_content")))
+                    fileSystemHandler.createFile("${baseDir}/test/build.gradle", ignoringLineEnding(fixtures("build_gradle_content.txt")))
                 }
             }
         }

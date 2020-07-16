@@ -50,7 +50,7 @@ object BlueprintWithVariables : Spek({
             it("should create resources with values passed as parameter") {
                 verify {
                     fileSystemHandler.createFolder("$baseDir/new-project")
-                    fileSystemHandler.createFile("$baseDir/new-project/build.gradle", ignoringLineEnding(fixtures("build_gradle_with_variable")))
+                    fileSystemHandler.createFile("$baseDir/new-project/build.gradle", ignoringLineEnding(fixtures("build_gradle_with_variable.txt")))
                 }
             }
         }

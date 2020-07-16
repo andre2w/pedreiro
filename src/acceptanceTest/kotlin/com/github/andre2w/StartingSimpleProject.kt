@@ -50,7 +50,7 @@ object StartingSimpleProject : Spek({
                 verify {
                     fileSystemHandler.createFolder("${baseDir}/test/src/main/kotlin")
                     fileSystemHandler.createFolder("${baseDir}/test/src/main/resources")
-                    fileSystemHandler.createFile("${baseDir}/test/src/build.gradle", ignoringLineEnding(fixtures("build_gradle_content")))
+                    fileSystemHandler.createFile("${baseDir}/test/src/build.gradle", ignoringLineEnding(fixtures("build_gradle_content.txt")))
                 }
             }
 
