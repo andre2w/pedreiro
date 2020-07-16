@@ -1,5 +1,6 @@
 package com.github.andre2w
 
+import com.github.andre2w.fixtures.FixtureLoader
 import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
@@ -16,6 +17,7 @@ import org.spekframework.spek2.style.specification.describe
 object StartingSimpleProject : Spek({
 
     val ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)
+    val fixtures = FixtureLoader("Simple")
 
     describe("The Pedreiro cli") {
         val baseDir = "/home/user/projects"
@@ -37,8 +39,8 @@ object StartingSimpleProject : Spek({
         describe("creating project from a simple blueprint with only folders and files") {
             every { environment.currentDir() } returns baseDir
             every { environment.userHome() } returns homeDir
-            every { fileSystemHandler.readFile(configurationPath) } returns SimpleFixtures.CONFIGURATION
-            every { fileSystemHandler.readFile(blueprintPath) } returns SimpleFixtures.SIMPLE_TEMPLATE
+            every { fileSystemHandler.readFile(configurationPath) } returns fixtures("configuration.yml")
+            every { fileSystemHandler.readFile(blueprintPath) } returns fixtures("simple_template.yml")
 
             execute(ctx, arrayOf(blueprintName))
 
@@ -47,7 +49,7 @@ object StartingSimpleProject : Spek({
                 verify {
                     fileSystemHandler.createFolder("${baseDir}/test/src/main/kotlin")
                     fileSystemHandler.createFolder("${baseDir}/test/src/main/resources")
-                    fileSystemHandler.createFile("${baseDir}/test/src/build.gradle", SimpleFixtures.BUILD_GRADLE_CONTENT)
+                    fileSystemHandler.createFile("${baseDir}/test/src/build.gradle", fixtures("build_gradle_content.yml"))
                 }
             }
 
@@ -77,8 +79,8 @@ object StartingSimpleProject : Spek({
             ).joinToString(" ")
             every { environment.currentDir() } returns baseDir
             every { environment.userHome() } returns homeDir
-            every { fileSystemHandler.readFile(configurationPath) } returns SimpleFixtures.CONFIGURATION
-            every { fileSystemHandler.readFile(blueprintPath) } returns SimpleFixtures.COMMAND_TEMPLATE
+            every { fileSystemHandler.readFile(configurationPath) } returns fixtures("configuration.yml")
+            every { fileSystemHandler.readFile(blueprintPath) } returns fixtures("command_template.yml")
             every { processExecutor.execute(command, "$baseDir/test") } returns 0
 
             execute(ctx, arrayOf(blueprintName))
@@ -94,7 +96,7 @@ object StartingSimpleProject : Spek({
         describe("when creating a project from a blueprint that doesn't exists") {
             every { environment.currentDir() } returns baseDir
             every { environment.userHome() } returns homeDir
-            every { fileSystemHandler.readFile(configurationPath) } returns SimpleFixtures.CONFIGURATION
+            every { fileSystemHandler.readFile(configurationPath) } returns fixtures("configuration.yml")
             every { fileSystemHandler.readFile(blueprintPath) } returns null
             every { fileSystemHandler.readFile("$homeDir/.pedreiro/blueprints/${blueprintName}.yaml") } returns null
 
@@ -112,7 +114,7 @@ object StartingSimpleProject : Spek({
         describe("when creating a project from a invalid blueprint") {
             every { environment.currentDir() } returns baseDir
             every { environment.userHome() } returns homeDir
-            every { fileSystemHandler.readFile(configurationPath) } returns SimpleFixtures.CONFIGURATION
+            every { fileSystemHandler.readFile(configurationPath) } returns fixtures("configuration.yml")
             every { fileSystemHandler.readFile(blueprintPath) } returns "INVALID TEMPLATE"
 
             it("should display message saying that failed to load blueprint") {

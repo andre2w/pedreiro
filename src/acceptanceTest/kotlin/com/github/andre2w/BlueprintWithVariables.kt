@@ -1,5 +1,6 @@
 package com.github.andre2w
 
+import com.github.andre2w.fixtures.FixtureLoader
 import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
@@ -17,6 +18,7 @@ import org.spekframework.spek2.style.specification.describe
 object BlueprintWithVariables : Spek({
 
     val ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)
+    val fixtures = FixtureLoader("Simple")
 
     describe("The Pedreiro cli") {
         val baseDir = "/home/user/projects"
@@ -39,15 +41,15 @@ object BlueprintWithVariables : Spek({
         describe("createting a project form a blueprint with variables") {
             every { environment.currentDir() } returns baseDir
             every { environment.userHome() } returns homeDir
-            every { fileSystemHandler.readFile(configurationPath) } returns SimpleFixtures.CONFIGURATION
-            every { fileSystemHandler.readFile(blueprintPath) } returns SimpleFixtures.TEMPLATE_WITH_VARIABLES
+            every { fileSystemHandler.readFile(configurationPath) } returns fixtures("configuration.yml")
+            every { fileSystemHandler.readFile(blueprintPath) } returns fixtures("template_with_variables.yml")
 
-            execute(ctx, arrayOf(blueprintName,"-a","project_name=new-project","--arg","package_name=com.test"))
+            execute(ctx, arrayOf(blueprintName, "-a", "project_name=new-project", "--arg", "package_name=com.test"))
 
             it("should create resources with values passed as parameter") {
                 verify {
                     fileSystemHandler.createFolder("$baseDir/new-project")
-                    fileSystemHandler.createFile("$baseDir/new-project/build.gradle", SimpleFixtures.BUILD_GRADLE_WITH_VARIABLE)
+                    fileSystemHandler.createFile("$baseDir/new-project/build.gradle", fixtures("build_gradle_with_variable.yml"))
                 }
             }
         }
