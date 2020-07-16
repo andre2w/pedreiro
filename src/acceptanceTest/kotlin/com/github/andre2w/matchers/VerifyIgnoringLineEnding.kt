@@ -10,9 +10,13 @@ data class VerifyIgnoringLineEnding<T>(
     override fun match(arg: T?): Boolean {
         val expected = expectedText.lines()
         val actual = arg.toString().lines()
-        val result = expected.zip(actual).fold(true) { _, pair -> pair.first == pair.second }
-        return result
+        return compareStrings(expected, actual)
     }
+
+    private fun compareStrings(expected: List<String>, actual: List<String>) =
+            expected.zip(actual).fold(true) { result, pair ->
+                pair.first == pair.second && result
+            }
 }
 
 inline fun <reified T : String> MockKMatcherScope.ignoringLineEnding(
