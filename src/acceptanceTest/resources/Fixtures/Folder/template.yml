@@ -1,0 +1,22 @@
+---
+- type: folder
+  name: test
+  children:
+
+    - type: folder
+      name: src
+      children:
+
+        - type: folder
+          name: main
+          children:
+
+            - type: folder
+              name: kotlin
+
+            - type: folder
+              name: resources
+
+    - type: file
+      name: build.gradle
+      source: build.gradle
