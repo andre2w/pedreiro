@@ -65,10 +65,7 @@ object StartingSimpleProject : Spek({
                     "com.example.test"
             ).joinToString(" ")
 
-            pedreiroEnvironment.assertions {
-                every { environment.currentDir() } returns baseDir
-                every { environment.userHome() } returns homeDir
-                every { fileSystemHandler.readFile(configurationPath) } returns fixtures("configuration")
+            pedreiroEnvironment.setup {
                 every { fileSystemHandler.readFile(blueprintPath) } returns fixtures("command_template")
                 every { processExecutor.execute(command, "$baseDir/test") } returns 0
             }
@@ -88,9 +85,6 @@ object StartingSimpleProject : Spek({
 
         describe("when creating a project from a blueprint that doesn't exists") {
             pedreiroEnvironment.setup {
-                every { environment.currentDir() } returns baseDir
-                every { environment.userHome() } returns homeDir
-                every { fileSystemHandler.readFile(configurationPath) } returns fixtures("configuration")
                 every { fileSystemHandler.readFile(blueprintPath) } returns null
                 every { fileSystemHandler.readFile("$homeDir/.pedreiro/blueprints/${blueprintName}.yaml") } returns null
             }
