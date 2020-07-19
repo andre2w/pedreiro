@@ -25,7 +25,7 @@ class ConfigurationManagerShould {
         every { environment.userHome() } returns "/home/pedreiro"
 
         val configurationManager = ConfigurationManager(fileSystemHandler, environment)
-        val loadedConfiguration : PedreiroConfiguration = configurationManager.pedreiroConfiguration()
+        val loadedConfiguration : PedreiroConfiguration = configurationManager.loadConfiguration()
 
         assertThat(loadedConfiguration).isEqualTo(configuration)
     }
@@ -38,7 +38,7 @@ class ConfigurationManagerShould {
         val configurationManager = ConfigurationManager(fileSystemHandler, environment)
 
         assertThrows<ConfigurationNotFound> {
-            configurationManager.pedreiroConfiguration()
+            configurationManager.loadConfiguration()
         }
     }
 }

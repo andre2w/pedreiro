@@ -11,12 +11,11 @@ import javax.inject.Singleton
 @Singleton
 class BlueprintReader(
         private val fileSystemHandler: FileSystemHandler,
-        private val consoleHandler: ConsoleHandler,
-        private val configuration: PedreiroConfiguration
+        private val consoleHandler: ConsoleHandler
 ) {
     private val handlebars: Handlebars = Handlebars()
 
-    fun read(arguments: Arguments): Blueprint {
+    fun read(arguments: Arguments, configuration: PedreiroConfiguration): Blueprint {
         val blueprintPath = "${configuration.blueprintsFolder}/${arguments.blueprintName}"
 
         return if (fileSystemHandler.isFolder(blueprintPath)) {

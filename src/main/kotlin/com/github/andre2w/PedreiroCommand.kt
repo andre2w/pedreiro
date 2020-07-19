@@ -3,6 +3,7 @@ package com.github.andre2w
 import com.github.andre2w.pedreiro.Arguments
 import com.github.andre2w.pedreiro.Pedreiro
 import com.github.andre2w.pedreiro.blueprints.BlueprintParsingException
+import com.github.andre2w.pedreiro.configuration.ConfigurationNotFound
 import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.core.annotation.TypeHint
@@ -37,6 +38,9 @@ class PedreiroCommand : Runnable {
         } catch (err: BlueprintParsingException) {
             consoleHandler.print(err.message ?: "Error while parsing blueprint")
             consoleHandler.exitWith(1)
+        } catch (err: ConfigurationNotFound) {
+            consoleHandler.print("Failed to load configuration: ${err.configFilePath}")
+            consoleHandler.exitWith(2)
         }
     }
 

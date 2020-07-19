@@ -2,6 +2,8 @@ package com.github.andre2w.pedreiro.blueprints
 
 
 import com.github.andre2w.pedreiro.Arguments
+import com.github.andre2w.pedreiro.configuration.ConfigurationManager
+import com.github.andre2w.pedreiro.configuration.PedreiroConfiguration
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
 import com.github.andre2w.pedreiro.environment.ProcessExecutor
@@ -20,11 +22,14 @@ class BlueprintServiceShould {
     private val fileSystemHandler = mockk<FileSystemHandler>()
     private val environment = mockk<LocalEnvironment>()
     private val processExecutor = mockk<ProcessExecutor>()
-    private val blueprintService = BlueprintService(blueprintReader, fileSystemHandler, environment, processExecutor)
+    private val configurationManager = mockk<ConfigurationManager>()
+    private val configuration = PedreiroConfiguration("/home/user/pedreiro/.pedreiro/blueprints")
+    private val blueprintService = BlueprintService(blueprintReader, fileSystemHandler, environment, processExecutor, configurationManager)
 
     @BeforeEach
     fun setUp() {
         clearAllMocks()
+        every { configurationManager.loadConfiguration() } returns configuration
     }
 
     @Test
@@ -46,7 +51,7 @@ class BlueprintServiceShould {
                        name: resources
         """.trimIndent()
         val arguments = Arguments(blueprintName)
-        every { blueprintReader.read(arguments) } returns Blueprint(blueprint)
+        every { blueprintReader.read(arguments, configuration) } returns Blueprint(blueprint)
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
@@ -92,7 +97,7 @@ class BlueprintServiceShould {
               name: build.gradle
               content: dependencies list""".trimIndent()
         val arguments = Arguments(blueprintName)
-        every { blueprintReader.read(arguments) } returns Blueprint(blueprint)
+        every { blueprintReader.read(arguments, configuration) } returns Blueprint(blueprint)
 
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
@@ -126,7 +131,7 @@ class BlueprintServiceShould {
                   command: gradle init
         """.trimIndent()
         val arguments = Arguments(blueprintName)
-        every { blueprintReader.read(arguments) } returns Blueprint(blueprint)
+        every { blueprintReader.read(arguments, configuration) } returns Blueprint(blueprint)
 
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
@@ -153,7 +158,7 @@ class BlueprintServiceShould {
         val blueprintName = "blueprintWithCommand"
         val blueprint = "\"INVALID:\":\":ASDF:"
         val arguments = Arguments(blueprintName)
-        every { blueprintReader.read(arguments) } returns Blueprint(blueprint)
+        every { blueprintReader.read(arguments, configuration) } returns Blueprint(blueprint)
 
         assertThrows<BlueprintParsingException> { blueprintService.loadBlueprint(arguments) }
     }
@@ -169,7 +174,7 @@ class BlueprintServiceShould {
         val files = mapOf(
                 "build.gradle" to "id 'kotlin'"
         )
-        every { blueprintReader.read(arguments) } returns Blueprint(blueprint, files)
+        every { blueprintReader.read(arguments, configuration) } returns Blueprint(blueprint, files)
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
