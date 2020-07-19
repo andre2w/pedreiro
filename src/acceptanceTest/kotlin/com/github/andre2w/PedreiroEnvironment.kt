@@ -12,21 +12,24 @@ import io.mockk.every
 import io.mockk.mockk
 
 class PedreiroEnvironment(
-        private val fixtures: FixtureLoader
+        private val fixtures: FixtureLoader,
+        val fileSystemHandler: FileSystemHandler = mockk(relaxUnitFun = true),
+        val environment: LocalEnvironment = mockk(relaxUnitFun = true),
+        val consoleHandler: ConsoleHandler = mockk(relaxUnitFun = true),
+        val processExecutor: ProcessExecutor = mockk(relaxUnitFun = true),
+        val baseDir: String = "/home/user/projects",
+        val homeDir: String = "/home/user/pedreiro",
+        val configurationPath: String = "$homeDir/.pedreiro/configuration.yml"
 ) {
 
     private val ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)
-    val fileSystemHandler = mockk<FileSystemHandler>(relaxUnitFun = true)
-    val environment = mockk<LocalEnvironment>(relaxUnitFun = true)
-    val consoleHandler = mockk<ConsoleHandler>(relaxUnitFun = true)
-    val processExecutor = mockk<ProcessExecutor>(relaxUnitFun = true)
-    val baseDir = "/home/user/projects"
-    val homeDir = "/home/user/pedreiro"
-    val configurationPath = "$homeDir/.pedreiro/configuration.yml"
 
     init {
         registerMocks()
+        setupStubs()
+    }
 
+    private fun setupStubs() {
         every { environment.currentDir() } returns baseDir
         every { environment.userHome() } returns homeDir
         every { fileSystemHandler.readFile(configurationPath) } returns fixtures("configuration")
