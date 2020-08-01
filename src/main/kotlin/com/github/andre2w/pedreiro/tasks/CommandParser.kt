@@ -7,7 +7,7 @@ class CommandParser {
 
     private val delimiters = listOf('\'', '"')
 
-    fun parseCommand(command: String): ArrayList<String> {
+    fun parse(command: String): ArrayList<String> {
         val args = ArrayList<String>()
 
         var currentWord = ""

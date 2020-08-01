@@ -12,7 +12,7 @@ class ProcessExecutorShould {
 
     @Test
     fun `execute shell commands in the specified folder`() {
-        val processExecutor = ProcessExecutor(CommandParser())
+        val processExecutor = ProcessExecutor(CommandParser(), ConsoleHandler())
         val userDir = System.getProperty("user.dir")
         val fileName = "test-${rightNow()}.txt"
 

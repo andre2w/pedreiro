@@ -6,6 +6,8 @@ import kotlin.system.exitProcess
 @Singleton
 class ConsoleHandler {
 
+    private var debug: Boolean = false
+
     fun print(text: String) {
         println(text)
     }
@@ -16,6 +18,14 @@ class ConsoleHandler {
 
     fun printError(text: String) {
         System.err.println(text)
+    }
+
+    fun activeDebugMode() {
+        debug = true
+    }
+
+    fun printDebug(text: String) {
+        if (debug) print(text)
     }
 
 }
