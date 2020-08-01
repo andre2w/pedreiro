@@ -93,7 +93,7 @@ object StartingSimpleProject : Spek({
 
             it("should display message saying that template was not found") {
                 pedreiroEnvironment.assertions {
-                    verify { consoleHandler.print("Failed to read blueprint $blueprintName") }
+                    verify { consoleHandler.printError("Failed to read blueprint $blueprintName") }
                 }
             }
 
@@ -111,7 +111,7 @@ object StartingSimpleProject : Spek({
 
             it("should display message saying that failed to load blueprint") {
                 pedreiroEnvironment.assertions {
-                    verify { consoleHandler.print("Failed to read blueprint $blueprintName") }
+                    verify { consoleHandler.printError("Failed to read blueprint $blueprintName") }
                 }
             }
 

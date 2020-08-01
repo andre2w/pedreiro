@@ -51,7 +51,7 @@ class PedreiroCommandShould {
 
         verify {
             consoleHandler.exitWith(1)
-            consoleHandler.print(errorMessage)
+            consoleHandler.printError(errorMessage)
         }
         ctx.close()
     }
@@ -68,7 +68,7 @@ class PedreiroCommandShould {
 
         verify {
             consoleHandler.exitWith(2)
-            consoleHandler.print("Failed to load configuration: $configFilePath")
+            consoleHandler.printError("Failed to load configuration: $configFilePath")
         }
         ctx.close()
     }

@@ -14,4 +14,8 @@ class ConsoleHandler {
         exitProcess(code)
     }
 
+    fun printError(text: String) {
+        System.err.println(text)
+    }
+
 }

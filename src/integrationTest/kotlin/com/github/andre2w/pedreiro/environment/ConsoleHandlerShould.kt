@@ -21,4 +21,18 @@ class ConsoleHandlerShould {
         assertThat("$text${lineSeparator()}").isEqualTo(String(byteArrayOutputStream.toByteArray()))
         System.setOut(out)
     }
+
+    @Test
+    internal fun `print text to stderr`() {
+        val out = System.err
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        val text = "text to be printed"
+        System.setErr(PrintStream(byteArrayOutputStream))
+
+        val consoleHandler = ConsoleHandler()
+        consoleHandler.printError(text)
+
+        assertThat("$text${lineSeparator()}").isEqualTo(String(byteArrayOutputStream.toByteArray()))
+        System.setErr(out)
+    }
 }
