@@ -76,7 +76,17 @@ class CommandParserShould {
 
         val parsedCommand = commandParser.parse(command)
 
-        val expectedCommand = listOf("echo","this \"is a\" message")
+        val expectedCommand = listOf("echo", "this \"is a\" message")
+        assertThat(parsedCommand).isEqualTo(expectedCommand)
+    }
+
+    @Test
+    fun `parse command with windows path`() {
+        val command = "C:\\\\'Program Files'\\\\gradle\\\\bin\\\\gradle --version"
+
+        val parsedCommand = commandParser.parse(command)
+
+        val expectedCommand = listOf("C:\\Program Files\\gradle\\bin\\gradle", "--version")
         assertThat(parsedCommand).isEqualTo(expectedCommand)
     }
 }

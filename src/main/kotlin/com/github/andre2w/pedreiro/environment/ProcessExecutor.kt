@@ -11,8 +11,12 @@ class ProcessExecutor(
         private val consoleHandler: ConsoleHandler
 ) {
     fun execute(command: String, runFolder: String) : Int {
+
+        val parsedCommand = commandParser.parse(command)
+        consoleHandler.printDebug("Executing command: \"$parsedCommand\"")
+
         val process = ProcessBuilder()
-                .command(commandParser.parse(command))
+                .command(parsedCommand)
                 .directory(File(runFolder))
                 .start()
 
