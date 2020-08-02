@@ -1,5 +1,6 @@
 package com.github.andre2w.pedreiro.tasks
 
+import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
 import io.mockk.every
@@ -13,6 +14,7 @@ class CreateFileShould {
     fun `create file with contents`() {
         val fileSystemHandler = mockk<FileSystemHandler>(relaxUnitFun = true)
         val environment = mockk<LocalEnvironment>()
+        val consoleHandler = mockk<ConsoleHandler>(relaxUnitFun = true)
         val content = """
             plugins {
                 id 'java'
@@ -24,7 +26,8 @@ class CreateFileShould {
                 "test-project/build.gradle",
                 content,
                 fileSystemHandler,
-                environment
+                environment,
+                consoleHandler
         )
         createFile.execute()
 

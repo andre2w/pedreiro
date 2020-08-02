@@ -81,6 +81,9 @@ class BlueprintReader(
                     .apply(arguments.extraArguments)
 
     private fun readFile(blueprintPath: String) : String? {
+
+        consoleHandler.printDebug("Trying to read blueprint from file $blueprintPath")
+
         val blueprint = fileSystemHandler.readFile(blueprintPath)
         if (blueprint != null) {
             consoleHandler.print("Creating project from blueprint ($blueprintPath)")

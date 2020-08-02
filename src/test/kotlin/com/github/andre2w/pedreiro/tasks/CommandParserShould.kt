@@ -25,7 +25,7 @@ class CommandParserShould {
         )
         val command = expectedCommand.joinToString(" ")
 
-        val parsedCommand = commandParser.parseCommand(command)
+        val parsedCommand = commandParser.parse(command)
 
         assertThat(parsedCommand).isEqualTo(expectedCommand)
     }
@@ -34,7 +34,7 @@ class CommandParserShould {
     fun `parse command with multiple words string enclosed with double quote as argument`() {
         val command = "echo \"test argument parsing\""
 
-        val parsedCommand = commandParser.parseCommand(command)
+        val parsedCommand = commandParser.parse(command)
 
         val expectedCommand = listOf("echo", "test argument parsing")
         assertThat(parsedCommand).isEqualTo(expectedCommand)
@@ -44,7 +44,7 @@ class CommandParserShould {
     fun `parse command with multiple words string enclosed with single quote as argument`() {
         val command = "echo \'test argument parsing\'"
 
-        val parsedCommand = commandParser.parseCommand(command)
+        val parsedCommand = commandParser.parse(command)
 
         val expectedCommand = listOf("echo", "test argument parsing")
         assertThat(parsedCommand).isEqualTo(expectedCommand)
@@ -54,7 +54,7 @@ class CommandParserShould {
     fun `parse command with escaped quote`() {
         val command = "echo \'there\\'s a quote in this argument\'"
 
-        val parsedCommand = commandParser.parseCommand(command)
+        val parsedCommand = commandParser.parse(command)
 
         val expectedCommand = listOf("echo", "there\'s a quote in this argument")
         assertThat(parsedCommand).isEqualTo(expectedCommand)
@@ -64,7 +64,7 @@ class CommandParserShould {
     fun `parse command with nested quotes`() {
         val command = "echo \"this \'is a\' message\""
 
-        val parsedCommand = commandParser.parseCommand(command)
+        val parsedCommand = commandParser.parse(command)
 
         val expectedCommand = listOf("echo","this \'is a\' message")
         assertThat(parsedCommand).isEqualTo(expectedCommand)
@@ -74,9 +74,19 @@ class CommandParserShould {
     fun `parse command with nested double quotes`() {
         val command = "echo \'this \"is a\" message\'"
 
-        val parsedCommand = commandParser.parseCommand(command)
+        val parsedCommand = commandParser.parse(command)
 
-        val expectedCommand = listOf("echo","this \"is a\" message")
+        val expectedCommand = listOf("echo", "this \"is a\" message")
+        assertThat(parsedCommand).isEqualTo(expectedCommand)
+    }
+
+    @Test
+    fun `parse command with windows path`() {
+        val command = "C:\\\\'Program Files'\\\\gradle\\\\bin\\\\gradle --version"
+
+        val parsedCommand = commandParser.parse(command)
+
+        val expectedCommand = listOf("C:\\Program Files\\gradle\\bin\\gradle", "--version")
         assertThat(parsedCommand).isEqualTo(expectedCommand)
     }
 }

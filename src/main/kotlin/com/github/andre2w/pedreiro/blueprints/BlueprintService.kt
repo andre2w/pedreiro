@@ -2,6 +2,7 @@ package com.github.andre2w.pedreiro.blueprints
 
 import com.github.andre2w.pedreiro.Arguments
 import com.github.andre2w.pedreiro.configuration.ConfigurationManager
+import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
 import com.github.andre2w.pedreiro.environment.ProcessExecutor
@@ -21,7 +22,8 @@ class BlueprintService(
         private val fileSystemHandler: FileSystemHandler,
         private val environment: LocalEnvironment,
         private val processExecutor: ProcessExecutor,
-        private val configurationManager: ConfigurationManager
+        private val configurationManager: ConfigurationManager,
+        private val consoleHandler: ConsoleHandler
 ) {
 
     private val yamlParser: Yaml = Yaml()
@@ -86,7 +88,8 @@ class BlueprintService(
                 CreateFolder(
                         currentLevel.asPath(),
                         fileSystemHandler,
-                        environment
+                        environment,
+                        consoleHandler
                 )
         )
 
@@ -119,7 +122,8 @@ class BlueprintService(
                 filePath,
                 content,
                 fileSystemHandler,
-                environment
+                environment,
+                consoleHandler
         )
 
         return ParseResult.Single(createFile)

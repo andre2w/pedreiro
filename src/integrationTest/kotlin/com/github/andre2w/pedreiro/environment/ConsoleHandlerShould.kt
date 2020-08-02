@@ -35,4 +35,21 @@ class ConsoleHandlerShould {
         assertThat("$text${lineSeparator()}").isEqualTo(String(byteArrayOutputStream.toByteArray()))
         System.setErr(out)
     }
+
+    @Test
+    internal fun `print debug text only when debug mode is activated`() {
+        val out = System.out
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        val hiddenText = "this should not be printed"
+        val printedText = "text to be printed"
+        System.setOut(PrintStream(byteArrayOutputStream))
+
+        val consoleHandler = ConsoleHandler()
+        consoleHandler.printDebug(hiddenText)
+        consoleHandler.activeDebugMode()
+        consoleHandler.printDebug(printedText)
+
+        assertThat("$printedText${lineSeparator()}").isEqualTo(String(byteArrayOutputStream.toByteArray()))
+        System.setOut(out)
+    }
 }

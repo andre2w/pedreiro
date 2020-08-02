@@ -7,7 +7,8 @@ class CommandParser {
 
     private val delimiters = listOf('\'', '"')
 
-    fun parseCommand(command: String): ArrayList<String> {
+    fun parse(command: String): ArrayList<String> {
+
         val args = ArrayList<String>()
 
         var currentWord = ""
@@ -16,17 +17,22 @@ class CommandParser {
         var isEscapedChar = false
 
         for (character in command) {
-            if (character == ' ' && !inString) {
-                args.add(currentWord)
-                currentWord = ""
-            } else if (character == '\\') {
-                isEscapedChar = true
-            } else if (isQuotation(character, isEscapedChar, startingQuote)) {
-                inString = !inString
-                startingQuote = startingQuoteFrom(startingQuote, character)
-            } else {
-                isEscapedChar = false
-                currentWord += character
+            when {
+                spaceOutsideString(character, inString) -> {
+                    args.add(currentWord)
+                    currentWord = ""
+                }
+                isEscapingCharacter(character, isEscapedChar) -> {
+                    isEscapedChar = true
+                }
+                isQuotation(character, isEscapedChar, startingQuote) -> {
+                    inString = !inString
+                    startingQuote = startingQuoteFrom(startingQuote, character)
+                }
+                else -> {
+                    isEscapedChar = false
+                    currentWord += character
+                }
             }
         }
 
@@ -34,6 +40,11 @@ class CommandParser {
 
         return args
     }
+
+    private fun isEscapingCharacter(character: Char, isEscapedChar: Boolean) =
+            character.isBackslash() && !isEscapedChar
+
+    private fun spaceOutsideString(character: Char, inString: Boolean) = character == ' ' && !inString
 
     private fun startingQuoteFrom(startingQuote: Char, character: Char): Char =
             if (startingQuote != ' ') {
@@ -43,6 +54,10 @@ class CommandParser {
             }
 
     private fun isQuotation(character: Char, isEscapedChar: Boolean, startingQuote: Char) =
-            character in delimiters && !isEscapedChar && (character == startingQuote || startingQuote == ' ')
+            character in delimiters && !isEscapedChar && characterMatchesStartingQuote(character, startingQuote)
 
+    private fun characterMatchesStartingQuote(character: Char, startingQuote: Char) =
+            character == startingQuote || startingQuote == ' '
+
+    private fun Char.isBackslash(): Boolean = this == '\\'
 }

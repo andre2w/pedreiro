@@ -1,5 +1,6 @@
 package com.github.andre2w.pedreiro.configuration
 
+import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
 import io.mockk.every
@@ -18,14 +19,15 @@ class ConfigurationManagerShould {
     private val configuration = PedreiroConfiguration(blueprintsFolder)
     private val fileSystemHandler = mockk<FileSystemHandler>()
     private val environment = mockk<LocalEnvironment>()
+    private val consoleHandler = mockk<ConsoleHandler>(relaxUnitFun = true)
 
     @Test
     fun `retrieve configurations from the file system`() {
         every { fileSystemHandler.readFile(configFilePath) } returns configurationFile
         every { environment.userHome() } returns "/home/pedreiro"
 
-        val configurationManager = ConfigurationManager(fileSystemHandler, environment)
-        val loadedConfiguration : PedreiroConfiguration = configurationManager.loadConfiguration()
+        val configurationManager = ConfigurationManager(fileSystemHandler, environment, consoleHandler)
+        val loadedConfiguration: PedreiroConfiguration = configurationManager.loadConfiguration()
 
         assertThat(loadedConfiguration).isEqualTo(configuration)
     }
@@ -35,7 +37,7 @@ class ConfigurationManagerShould {
         every { environment.userHome() } returns "/home/pedreiro"
         every { fileSystemHandler.readFile(configFilePath) } returns null
 
-        val configurationManager = ConfigurationManager(fileSystemHandler, environment)
+        val configurationManager = ConfigurationManager(fileSystemHandler, environment, consoleHandler)
 
         assertThrows<ConfigurationNotFound> {
             configurationManager.loadConfiguration()

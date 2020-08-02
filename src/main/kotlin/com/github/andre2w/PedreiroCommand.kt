@@ -16,22 +16,30 @@ class PedreiroCommand : Runnable {
     @Parameters(paramLabel = "Blueprint",
             arity = "1",
             description = ["Name of the blueprint that you want built"])
-    private var blueprintName : String = ""
+    private var blueprintName: String = ""
 
     @Option(names = ["-a", "--arg"],
             description = ["Extra variables to be used in your template"],
             arity = "0..*")
-    private var extraVariables : Map<String,String> = emptyMap()
+    private var extraVariables: Map<String, String> = emptyMap()
+
+    @Option(names = ["-v", "--verbose"],
+            description = [""])
+    private var verbose: Boolean = false
 
     @Inject
-    lateinit var pedreiro : Pedreiro
+    lateinit var pedreiro: Pedreiro
 
     @Inject
     lateinit var consoleHandler: ConsoleHandler
 
     override fun run() {
+
+        if (verbose)
+            consoleHandler.activeDebugMode()
+
         try {
-            pedreiro.build(Arguments(blueprintName, extraVariables))
+            pedreiro.build(Arguments(blueprintName, extraVariables, verbose))
             consoleHandler.print("Project created. You can start to work now.")
             consoleHandler.exitWith(0)
         } catch (err: BlueprintParsingException) {
