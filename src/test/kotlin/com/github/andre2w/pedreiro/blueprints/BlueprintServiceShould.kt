@@ -4,6 +4,7 @@ package com.github.andre2w.pedreiro.blueprints
 import com.github.andre2w.pedreiro.Arguments
 import com.github.andre2w.pedreiro.configuration.ConfigurationManager
 import com.github.andre2w.pedreiro.configuration.PedreiroConfiguration
+import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
 import com.github.andre2w.pedreiro.environment.ProcessExecutor
@@ -23,8 +24,9 @@ class BlueprintServiceShould {
     private val environment = mockk<LocalEnvironment>()
     private val processExecutor = mockk<ProcessExecutor>()
     private val configurationManager = mockk<ConfigurationManager>()
+    private val consoleHandler = mockk<ConsoleHandler>()
     private val configuration = PedreiroConfiguration("/home/user/pedreiro/.pedreiro/blueprints")
-    private val blueprintService = BlueprintService(blueprintReader, fileSystemHandler, environment, processExecutor, configurationManager)
+    private val blueprintService = BlueprintService(blueprintReader, fileSystemHandler, environment, processExecutor, configurationManager, consoleHandler)
 
     @BeforeEach
     fun setUp() {
@@ -59,27 +61,32 @@ class BlueprintServiceShould {
                 CreateFolder(
                         "project",
                         fileSystemHandler,
-                        environment
+                        environment,
+                        consoleHandler
                 ),
                 CreateFolder(
                         "project/src",
                         fileSystemHandler,
-                        environment
+                        environment,
+                        consoleHandler
                 ),
                 CreateFolder(
                         "project/src/main",
                         fileSystemHandler,
-                        environment
+                        environment,
+                        consoleHandler
                 ),
                 CreateFolder(
                         "project/src/main/kotlin",
                         fileSystemHandler,
-                        environment
+                        environment,
+                        consoleHandler
                 ),
                 CreateFolder(
                         "project/src/main/resources",
                         fileSystemHandler,
-                        environment
+                        environment,
+                        consoleHandler
                 )
         ))
 
@@ -106,13 +113,15 @@ class BlueprintServiceShould {
                 CreateFolder(
                         "project",
                         fileSystemHandler,
-                        environment
+                        environment,
+                        consoleHandler
                 ),
                 CreateFile(
                         "project/build.gradle",
                         "dependencies list",
                         fileSystemHandler,
-                        environment
+                        environment,
+                        consoleHandler
                 )
         )
 
@@ -140,7 +149,8 @@ class BlueprintServiceShould {
                 CreateFolder(
                         "test-command",
                         fileSystemHandler,
-                        environment
+                        environment,
+                        consoleHandler
                 ),
                 ExecuteCommand(
                         "gradle init",
@@ -183,7 +193,8 @@ class BlueprintServiceShould {
                         "build.gradle",
                         "id 'kotlin'",
                         fileSystemHandler,
-                        environment
+                        environment,
+                        consoleHandler
                 )
         )
         assertThat(loadedTasks).isEqualTo(expectedTasks)
