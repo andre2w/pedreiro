@@ -7,6 +7,7 @@ import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
 import com.github.andre2w.pedreiro.environment.ProcessExecutor
 import com.github.andre2w.pedreiro.tasks.*
+import com.github.andre2w.pedreiro.yaml.YamlNode
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.parser.ParserException
 import javax.inject.Singleton
@@ -38,7 +39,7 @@ class BlueprintService(
             throw BlueprintParsingException("Failed to parse blueprint ${arguments.blueprintName}")
         }
 
-        return Tasks.from(parse(SnakeYamlNode(blueprintTasks), blueprint))
+        return Tasks.from(parse(YamlNode(blueprintTasks), blueprint))
     }
 
     private fun parse(
@@ -136,35 +137,3 @@ class BlueprintService(
     private fun List<String>.asPath() = this.joinToString("/")
 }
 
-interface YamlNode : Iterable<YamlNode> {
-    fun isArray(): Boolean
-    fun getTextFromField(fieldName: String): String
-    fun getChildren(fieldName: String): YamlNode?
-    fun hasField(fieldName: String): Boolean
-}
-
-
-class SnakeYamlNode(private val node: Any) : YamlNode, Iterable<YamlNode> {
-    override fun isArray(): Boolean {
-        return node is List<*>
-    }
-
-    override fun getTextFromField(fieldName: String): String {
-        return (node as Map<String, String>)[fieldName]!!
-    }
-
-    override fun getChildren(fieldName: String): YamlNode? {
-        return (node as Map<*, *>)[fieldName]?.let { SnakeYamlNode(it) }
-    }
-
-    override fun hasField(fieldName: String): Boolean {
-        return (node as Map<*, *>).containsKey(fieldName)
-    }
-
-    override fun iterator(): Iterator<YamlNode> {
-        return (node as List<Any>)
-                .map { SnakeYamlNode(it) }
-                .iterator()
-    }
-
-}
