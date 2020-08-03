@@ -140,7 +140,7 @@ class BlueprintReaderShould {
               name: build.gradle
               source: build.gradle
         """.trimIndent()
-        val buildGradleTemplate = """
+        """
             plugin {
               id 'kotlin' version: {{ kotlin_version }}
             }
