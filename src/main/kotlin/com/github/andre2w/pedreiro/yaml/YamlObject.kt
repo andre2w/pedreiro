@@ -2,7 +2,7 @@ package com.github.andre2w.pedreiro.yaml
 
 class YamlObject(
         private val keyValues: Map<String, Any>
-) {
+) : YamlNodeNew {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -23,6 +23,6 @@ class YamlObject(
     }
 
     fun stringFrom(field: String): String {
-        return keyValues[field]?.let { value -> value.toString() } ?: throw FieldNotFound()
+        return keyValues[field]?.let(Any::toString) ?: throw FieldNotFound()
     }
 }

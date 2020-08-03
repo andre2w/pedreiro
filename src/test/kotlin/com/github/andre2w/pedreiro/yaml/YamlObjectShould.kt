@@ -25,4 +25,6 @@ class YamlObjectShould {
             yamlObject.stringFrom("invalid_field")
         }
     }
+
+
 }
