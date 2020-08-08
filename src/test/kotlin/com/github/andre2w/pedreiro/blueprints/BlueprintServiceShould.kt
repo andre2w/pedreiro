@@ -9,6 +9,7 @@ import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
 import com.github.andre2w.pedreiro.environment.ProcessExecutor
 import com.github.andre2w.pedreiro.tasks.*
+import com.github.andre2w.pedreiro.yaml.YamlParser
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -26,7 +27,7 @@ class BlueprintServiceShould {
     private val configurationManager = mockk<ConfigurationManager>()
     private val consoleHandler = mockk<ConsoleHandler>()
     private val configuration = PedreiroConfiguration("/home/user/pedreiro/.pedreiro/blueprints")
-    private val blueprintService = BlueprintService(blueprintReader, fileSystemHandler, environment, processExecutor, configurationManager, consoleHandler)
+    private val blueprintService = BlueprintService(blueprintReader, fileSystemHandler, environment, processExecutor, configurationManager, consoleHandler, YamlParser())
 
     @BeforeEach
     fun setUp() {
