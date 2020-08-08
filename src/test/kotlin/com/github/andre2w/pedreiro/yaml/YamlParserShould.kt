@@ -13,9 +13,9 @@ class YamlParserShould {
             field: test
         """.trimIndent()
 
-        val parsedYaml = yamlParser.parse(yaml) as YamlObject
+        val parsedYaml = yamlParser.parse(yaml) as YamlNode.Object
 
-        val expected = YamlObject(mapOf(
+        val expected = YamlNode.Object(mapOf(
                 "field" to "test"
         ))
         assertThat(parsedYaml).isEqualTo(expected)
@@ -28,11 +28,11 @@ class YamlParserShould {
             - second_field: second value
         """.trimIndent()
 
-        val parsedYaml = yamlParser.parse(yaml) as YamlList
+        val parsedYaml = yamlParser.parse(yaml) as YamlNode.List
 
-        val expected = YamlList(listOf(
-                YamlObject(mapOf( "first_field" to "test" )),
-                YamlObject(mapOf( "second_field" to "second value" ))
+        val expected = YamlNode.List(listOf(
+                YamlNode.Object(mapOf("first_field" to "test")),
+                YamlNode.Object(mapOf("second_field" to "second value"))
         ))
         assertThat(parsedYaml).isEqualTo(expected)
     }
