@@ -25,10 +25,9 @@ class BlueprintService(
         private val environment: LocalEnvironment,
         private val processExecutor: ProcessExecutor,
         private val configurationManager: ConfigurationManager,
-        private val consoleHandler: ConsoleHandler
+        private val consoleHandler: ConsoleHandler,
+        private val yamlParser: YamlParser
 ) {
-
-    private val yamlParser = YamlParser()
 
     fun loadBlueprint(arguments: Arguments): Tasks {
         val configuration = configurationManager.loadConfiguration()
