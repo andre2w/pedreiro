@@ -6,9 +6,9 @@ class YamlParser {
 
     private val yamlParser = Yaml()
 
-    fun parse(yaml: String): YamlNodeNew {
+    fun parse(yaml: String): YamlNode {
         val keyValues = yamlParser.load<Any>(yaml)
-        return YamlNodeNew.parse(keyValues)
+        return YamlNode.parse(keyValues)
     }
 
 }
