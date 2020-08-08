@@ -1,7 +1,7 @@
 package com.github.andre2w.pedreiro.blueprints
 
 import com.github.andre2w.pedreiro.Arguments
-import com.github.andre2w.pedreiro.configuration.PedreiroConfiguration
+import com.github.andre2w.pedreiro.configuration.ConfigurationManager
 import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.jknack.handlebars.Handlebars
@@ -11,11 +11,13 @@ import javax.inject.Singleton
 @Singleton
 class BlueprintReader(
         private val fileSystemHandler: FileSystemHandler,
-        private val consoleHandler: ConsoleHandler
+        private val consoleHandler: ConsoleHandler,
+        private val configurationManager: ConfigurationManager
 ) {
     private val handlebars: Handlebars = Handlebars()
 
-    fun read(arguments: Arguments, configuration: PedreiroConfiguration): Blueprint {
+    fun read(arguments: Arguments): Blueprint {
+        val configuration = configurationManager.loadConfiguration()
         val blueprintPath = "${configuration.blueprintsFolder}/${arguments.blueprintName}"
 
         return if (fileSystemHandler.isFolder(blueprintPath)) {
