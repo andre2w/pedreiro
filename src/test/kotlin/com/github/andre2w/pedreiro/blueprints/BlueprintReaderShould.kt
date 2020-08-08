@@ -1,12 +1,15 @@
 package com.github.andre2w.pedreiro.blueprints
 
 import com.github.andre2w.pedreiro.Arguments
+import com.github.andre2w.pedreiro.configuration.ConfigurationManager
 import com.github.andre2w.pedreiro.configuration.PedreiroConfiguration
 import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
+import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -14,6 +17,7 @@ class BlueprintReaderShould {
 
 
     private val fileSystemHandler = mockk<FileSystemHandler>()
+    private val configurationManager = mockk<ConfigurationManager>()
     private val configuration = PedreiroConfiguration("/home/user/pedreiro/.pedreiro/blueprints")
     private val consoleHandler = mockk<ConsoleHandler>(relaxUnitFun = true)
     private val blueprintTemplate = """
@@ -34,7 +38,13 @@ class BlueprintReaderShould {
               command: gradle init
     """.trimIndent()
 
-        private val blueprintReader = BlueprintReader(fileSystemHandler, consoleHandler)
+    private val blueprintReader = BlueprintReader(fileSystemHandler, consoleHandler, configurationManager)
+
+    @BeforeEach
+    internal fun setUp() {
+        clearAllMocks()
+        every { configurationManager.loadConfiguration() } returns configuration
+    }
 
     @Test
     fun `read yaml blueprint from file system parsing variables`() {
@@ -43,7 +53,7 @@ class BlueprintReaderShould {
         every { fileSystemHandler.readFile("$filepath.yml") } returns blueprintTemplate
         every { fileSystemHandler.isFolder(filepath) } returns false
 
-        val blueprint = blueprintReader.read(arguments, configuration)
+        val blueprint = blueprintReader.read(arguments)
 
         assertThat(blueprint).isEqualTo(Blueprint(parsedTemplate))
     }
@@ -57,7 +67,7 @@ class BlueprintReaderShould {
 
 
         assertThrows<BlueprintParsingException> {
-            blueprintReader.read(Arguments("test"), configuration)
+            blueprintReader.read(Arguments("test"))
         }
     }
 
@@ -69,7 +79,7 @@ class BlueprintReaderShould {
         every { fileSystemHandler.readFile("$filepath.yaml") } returns parsedTemplate
         every { fileSystemHandler.isFolder(filepath) } returns false
 
-        val blueprint = blueprintReader.read(arguments, configuration)
+        val blueprint = blueprintReader.read(arguments)
 
         assertThat(blueprint).isEqualTo(Blueprint(parsedTemplate))
     }
@@ -95,7 +105,7 @@ class BlueprintReaderShould {
         every { fileSystemHandler.readFile("$filepath/variables.yml") } returns null
         every { fileSystemHandler.readFile("$filepath/variables.yaml") } returns null
 
-        val blueprint = blueprintReader.read(arguments, configuration)
+        val blueprint = blueprintReader.read(arguments)
 
         val expectedBlueprint = Blueprint(template, mapOf("build.gradle" to buildGradle))
         assertThat(blueprint).isEqualTo(expectedBlueprint)
@@ -127,7 +137,7 @@ class BlueprintReaderShould {
         every { fileSystemHandler.readFile("$filepath/variables.yml") } returns null
         every { fileSystemHandler.readFile("$filepath/variables.yaml") } returns null
 
-        val blueprint = blueprintReader.read(arguments, configuration)
+        val blueprint = blueprintReader.read(arguments)
 
         val expectedBlueprint = Blueprint(template, mapOf("build.gradle" to buildGradle))
         assertThat(blueprint).isEqualTo(expectedBlueprint)
@@ -157,7 +167,7 @@ class BlueprintReaderShould {
 
 
         assertThrows<BlueprintParsingException> {
-            blueprintReader.read(arguments, configuration)
+            blueprintReader.read(arguments)
         }
 
     }
@@ -190,7 +200,7 @@ class BlueprintReaderShould {
         every { fileSystemHandler.readFile("$filepath/variables.yml") } returns variables
         every { fileSystemHandler.listFilesIn(filepath) } returns listOf("blueprint.yml", "build.gradle", "variables.yml")
 
-        val blueprint = blueprintReader.read(arguments, configuration)
+        val blueprint = blueprintReader.read(arguments)
 
         val expectedBlueprint = Blueprint(template, mapOf("build.gradle" to buildGradle))
         assertThat(blueprint).isEqualTo(expectedBlueprint)

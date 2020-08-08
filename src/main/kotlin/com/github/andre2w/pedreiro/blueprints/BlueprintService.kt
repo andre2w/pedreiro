@@ -1,7 +1,6 @@
 package com.github.andre2w.pedreiro.blueprints
 
 import com.github.andre2w.pedreiro.Arguments
-import com.github.andre2w.pedreiro.configuration.ConfigurationManager
 import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
@@ -24,14 +23,12 @@ class BlueprintService(
         private val fileSystemHandler: FileSystemHandler,
         private val environment: LocalEnvironment,
         private val processExecutor: ProcessExecutor,
-        private val configurationManager: ConfigurationManager,
         private val consoleHandler: ConsoleHandler,
         private val yamlParser: YamlParser
 ) {
 
     fun loadBlueprint(arguments: Arguments): Tasks {
-        val configuration = configurationManager.loadConfiguration()
-        val blueprint = blueprintReader.read(arguments, configuration)
+        val blueprint = blueprintReader.read(arguments)
 
         val blueprintTasks = try {
             yamlParser.parse(blueprint.tasks)
