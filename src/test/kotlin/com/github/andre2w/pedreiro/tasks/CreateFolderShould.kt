@@ -29,5 +29,4 @@ class CreateFolderShould {
             fileSystemHandler.createFolder("/home/andre/projects/test-folder")
         }
     }
-
 }

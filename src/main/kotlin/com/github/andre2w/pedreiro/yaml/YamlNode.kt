@@ -17,7 +17,6 @@ sealed class YamlNode {
             val parsedNodes = (nodes as KotlinList<*>).map { node -> parse(node as Any) }
             return List(parsedNodes)
         }
-
     }
 
     data class Value(private val value: Any) : YamlNode() {
@@ -29,18 +28,14 @@ sealed class YamlNode {
 
     object Missing : YamlNode()
 
-    data class Object(
-            private val keyValues: Map<*, *>
-    ) : YamlNode() {
+    data class Object(private val keyValues: Map<*, *>) : YamlNode() {
 
         operator fun get(field: String): YamlNode {
             return keyValues[field]?.let { parse(it) } ?: Missing
         }
     }
 
-    data class List(
-            private val nodes: KotlinList<YamlNode>
-    ) : YamlNode(), KotlinList<YamlNode> {
+    data class List(private val nodes: KotlinList<YamlNode>) : YamlNode(), KotlinList<YamlNode> {
 
         override fun iterator(): Iterator<YamlNode> {
             return nodes.iterator()
@@ -85,5 +80,4 @@ sealed class YamlNode {
             return nodes.subList(fromIndex, toIndex)
         }
     }
-
 }

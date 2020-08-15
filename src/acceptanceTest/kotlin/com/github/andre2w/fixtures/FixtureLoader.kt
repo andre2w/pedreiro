@@ -2,8 +2,6 @@ package com.github.andre2w.fixtures
 
 class FixtureLoader(private val folder: String, private val defaultExtension: String?) {
 
-    constructor(folder: String) : this(folder, null)
-
     init {
         validateExtension()
     }

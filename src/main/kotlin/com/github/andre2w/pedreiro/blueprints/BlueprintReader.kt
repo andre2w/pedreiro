@@ -48,7 +48,6 @@ class BlueprintReader(
         return Blueprint(blueprint, extraFiles)
     }
 
-
     private fun readVariables(blueprintPath: String, arguments: Arguments): Arguments {
         return try {
             val variablesFile = loadFromFile("$blueprintPath/variables", arguments)
@@ -63,7 +62,7 @@ class BlueprintReader(
         val extraFiles = fileSystemHandler.listFilesIn(blueprintPath)
 
         return extraFiles.asSequence()
-                .filter { file -> file != "blueprint.yml" && file != "variables.yml"}
+                .filter { file -> file != "blueprint.yml" && file != "variables.yml" }
                 .map { file -> readExtraFile(blueprintPath, file, arguments) }
                 .toMap()
     }

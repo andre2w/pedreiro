@@ -9,22 +9,30 @@ import io.micronaut.configuration.picocli.PicocliRunner
 import picocli.CommandLine.*
 import javax.inject.Inject
 
-@Command(name = "pedreiro", description = ["Pedreiro - A declarative scaffolding tool"],
-        mixinStandardHelpOptions = true)
+@Command(
+        name = "pedreiro", description = ["Pedreiro - A declarative scaffolding tool"],
+        mixinStandardHelpOptions = true
+)
 class PedreiroCommand : Runnable {
 
-    @Parameters(paramLabel = "Blueprint",
+    @Parameters(
+            paramLabel = "Blueprint",
             arity = "1",
-            description = ["Name of the blueprint that you want built"])
+            description = ["Name of the blueprint that you want built"]
+    )
     private var blueprintName: String = ""
 
-    @Option(names = ["-a", "--arg"],
+    @Option(
+            names = ["-a", "--arg"],
             description = ["Extra variables to be used in your template"],
-            arity = "0..*")
+            arity = "0..*"
+    )
     private var extraVariables: Map<String, String> = emptyMap()
 
-    @Option(names = ["-v", "--verbose"],
-            description = [""])
+    @Option(
+            names = ["-v", "--verbose"],
+            description = [""]
+    )
     private var verbose: Boolean = false
 
     @Inject

@@ -17,7 +17,7 @@ class FileSystemHandler {
         Files.write(filePath.toPath(), fileContent.toByteArray())
     }
 
-    fun readFile(filepath: String) : String? {
+    fun readFile(filepath: String): String? {
         return try {
             Files.readAllLines(filepath.toPath()).joinToString(System.lineSeparator())
         } catch (err: NoSuchFileException) {
@@ -25,16 +25,15 @@ class FileSystemHandler {
         }
     }
 
-    fun isFolder(path: String) : Boolean {
+    fun isFolder(path: String): Boolean {
         return Files.isDirectory(path.toPath())
     }
 
-    fun listFilesIn(folderPath: String) : List<String> {
+    fun listFilesIn(folderPath: String): List<String> {
         val files = Files.list(folderPath.toPath())
         return files.map { file -> file.fileName.toString() }
                 .collect(toList())
     }
 
     private fun String.toPath() = Paths.get(this)
-
 }

@@ -92,5 +92,4 @@ class FileSystemHandlerShould {
         val format = DateTimeFormatter.ofPattern("YYYY-MM-dd-hhmmssSSS")
         return LocalDateTime.now().format(format)
     }
-
 }

@@ -13,5 +13,4 @@ class Pedreiro(
         val tasks = blueprintService.loadBlueprint(arguments)
         scaffoldingService.execute(tasks)
     }
-
 }

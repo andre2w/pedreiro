@@ -26,7 +26,8 @@ class ScaffoldingServiceShould {
 
         val blueprint = Tasks.from(
                 createFolder,
-                createFile)
+                createFile
+        )
 
         scaffoldingService.execute(blueprint)
 
@@ -35,5 +36,4 @@ class ScaffoldingServiceShould {
             createFile.execute()
         }
     }
-
 }

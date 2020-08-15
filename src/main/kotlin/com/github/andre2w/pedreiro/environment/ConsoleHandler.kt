@@ -27,5 +27,4 @@ class ConsoleHandler {
     fun printDebug(text: String) {
         if (debug) print(text)
     }
-
 }

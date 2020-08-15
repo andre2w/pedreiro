@@ -13,9 +13,10 @@ class ConfigurationManagerShould {
 
     private val blueprintsFolder = "/home/pedreiro/.pedreiro/blueprints"
     private val configFilePath = "/home/pedreiro/.pedreiro/configuration.yml"
-    private val configurationFile = """
+    private val configurationFile =
+            """
         blueprintsFolder: "$blueprintsFolder"
-    """.trimIndent()
+        """.trimIndent()
     private val configuration = PedreiroConfiguration(blueprintsFolder)
     private val fileSystemHandler = mockk<FileSystemHandler>()
     private val environment = mockk<LocalEnvironment>()

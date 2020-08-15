@@ -15,7 +15,6 @@ import io.mockk.verify
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-
 class PedreiroCommandShould {
 
     private val pedreiro = mockk<Pedreiro>(relaxUnitFun = true)
@@ -74,10 +73,13 @@ class PedreiroCommandShould {
     }
 
     private fun parsedArguments(): Arguments {
-        return Arguments("testBlueprint", mapOf(
-                "test" to "blueprint",
-                "other" to "field"
-        ))
+        return Arguments(
+                "testBlueprint",
+                mapOf(
+                        "test" to "blueprint",
+                        "other" to "field"
+                )
+        )
     }
 
     private fun newPedreiroContext(): ApplicationContext {
@@ -86,6 +88,4 @@ class PedreiroCommandShould {
         ctx.registerSingleton(consoleHandler)
         return ctx
     }
-
-
 }

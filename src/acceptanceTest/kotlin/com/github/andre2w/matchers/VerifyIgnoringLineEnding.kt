@@ -3,9 +3,7 @@ package com.github.andre2w.matchers
 import io.mockk.Matcher
 import io.mockk.MockKMatcherScope
 
-data class VerifyIgnoringLineEnding<T>(
-        val expectedText: String
-) : Matcher<T> {
+data class VerifyIgnoringLineEnding<T>(val expectedText: String) : Matcher<T> {
 
     override fun match(arg: T?): Boolean {
         val expected = expectedText.lines()

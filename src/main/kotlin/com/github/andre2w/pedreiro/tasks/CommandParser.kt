@@ -42,7 +42,7 @@ class CommandParser {
     }
 
     private fun isEscapingCharacter(character: Char, isEscapedChar: Boolean) =
-            character.isBackslash() && !isEscapedChar
+        character.isBackslash() && !isEscapedChar
 
     private fun spaceOutsideString(character: Char, inString: Boolean) = character == ' ' && !inString
 

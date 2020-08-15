@@ -8,5 +8,4 @@ class LocalEnvironment {
     fun currentDir(): String = System.getProperty("user.dir")
 
     fun userHome(): String = System.getProperty("user.home")
-
 }

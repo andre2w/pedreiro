@@ -15,7 +15,7 @@ object StartingSimpleProject : Spek({
     describe("The Pedreiro cli") {
 
         val blueprintName = "baseGradle"
-        val blueprintPath = "${pedreiroEnvironment.homeDir}/.pedreiro/blueprints/${blueprintName}.yml"
+        val blueprintPath = "${pedreiroEnvironment.homeDir}/.pedreiro/blueprints/$blueprintName.yml"
 
         describe("creating project from a simple blueprint with only folders and files") {
             pedreiroEnvironment.setup {
@@ -31,14 +31,14 @@ object StartingSimpleProject : Spek({
             it("should create the file structure declared in the blueprint") {
                 pedreiroEnvironment.assertions {
                     verify {
-                        fileSystemHandler.createFolder("${baseDir}/test/src/main/kotlin")
-                        fileSystemHandler.createFolder("${baseDir}/test/src/main/resources")
-                        fileSystemHandler.createFile("${baseDir}/test/src/build.gradle", ignoringLineEnding(fixtures("build_gradle_content.txt")))
+                        fileSystemHandler.createFolder("$baseDir/test/src/main/kotlin")
+                        fileSystemHandler.createFolder("$baseDir/test/src/main/resources")
+                        fileSystemHandler.createFile("$baseDir/test/src/build.gradle", ignoringLineEnding(fixtures("build_gradle_content.txt")))
                     }
                 }
             }
 
-            it ("should print information about template creation and when its done") {
+            it("should print information about template creation and when its done") {
                 pedreiroEnvironment.assertions {
                     verify {
                         consoleHandler.print("Creating project from blueprint $blueprintPath")
@@ -70,7 +70,6 @@ object StartingSimpleProject : Spek({
                 every { processExecutor.execute(command, "$baseDir/test") } returns 0
             }
 
-
             pedreiroEnvironment.execute(arrayOf(blueprintName))
 
             it("should create a folder and execute command inside") {
@@ -86,7 +85,7 @@ object StartingSimpleProject : Spek({
         describe("when creating a project from a blueprint that doesn't exists") {
             pedreiroEnvironment.setup {
                 every { fileSystemHandler.readFile(blueprintPath) } returns null
-                every { fileSystemHandler.readFile("$homeDir/.pedreiro/blueprints/${blueprintName}.yaml") } returns null
+                every { fileSystemHandler.readFile("$homeDir/.pedreiro/blueprints/$blueprintName.yaml") } returns null
             }
 
             pedreiroEnvironment.execute(arrayOf(blueprintName))

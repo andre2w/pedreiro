@@ -5,6 +5,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "6.0.0"
     id "application"
     id 'idea'
+    id "org.jmailen.kotlinter" version "2.4.1"
 }
 
 version "0.1"
@@ -46,7 +47,6 @@ sourceSets {
         resources.srcDir file("src/integrationTest/resources")
     }
 }
-
 
 dependencies {
     kapt(platform("io.micronaut:micronaut-bom:$micronautVersion"))
@@ -207,4 +207,8 @@ idea {
         testSourceDirs += project.sourceSets.acceptanceTest.kotlin.srcDirs
         testSourceDirs += project.sourceSets.acceptanceTest.resources.srcDirs
     }
+}
+
+kotlinter {
+    disabledRules = ["no-wildcard-imports"]
 }

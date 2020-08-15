@@ -31,5 +31,4 @@ class ExecuteCommandShould {
             processExecutor.execute(command, "$runFolder/test-project")
         }
     }
-
 }

@@ -66,13 +66,8 @@ class BlueprintService(
         }
     }
 
-    private fun parseList(
-            level: List<String>,
-            blueprint: Blueprint,
-            yamlNode: YamlNode.List
-    ): List<Task> {
-        return yamlNode.flatMap { node -> parse(node, blueprint, level) }
-    }
+    private fun parseList(level: List<String>, blueprint: Blueprint, yamlNode: YamlNode.List) =
+            yamlNode.flatMap { node -> parse(node, blueprint, level) }
 
     private fun parseCreateFolder(
             level: List<String>,

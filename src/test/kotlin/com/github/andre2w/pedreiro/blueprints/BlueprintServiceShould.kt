@@ -1,6 +1,5 @@
 package com.github.andre2w.pedreiro.blueprints
 
-
 import com.github.andre2w.pedreiro.Arguments
 import com.github.andre2w.pedreiro.configuration.ConfigurationManager
 import com.github.andre2w.pedreiro.configuration.PedreiroConfiguration
@@ -38,7 +37,8 @@ class BlueprintServiceShould {
     @Test
     fun `parse blueprint that only create folders`() {
         val blueprintName = "blueprintName"
-        val blueprint = """
+        val blueprint =
+                """
         - type: folder
           name: project 
           children:
@@ -52,25 +52,26 @@ class BlueprintServiceShould {
                        name: kotlin
                      - type: folder
                        name: resources
-        """.trimIndent()
+            """.trimIndent()
         val arguments = Arguments(blueprintName)
         every { blueprintReader.read(arguments) } returns Blueprint(blueprint)
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
-        val tasks = Tasks.from(listOf(
-                CreateFolder(
-                        "project",
-                        fileSystemHandler,
-                        environment,
-                        consoleHandler
-                ),
-                CreateFolder(
-                        "project/src",
-                        fileSystemHandler,
-                        environment,
-                        consoleHandler
-                ),
+        val tasks = Tasks.from(
+                listOf(
+                        CreateFolder(
+                                "project",
+                                fileSystemHandler,
+                                environment,
+                                consoleHandler
+                        ),
+                        CreateFolder(
+                                "project/src",
+                                fileSystemHandler,
+                                environment,
+                                consoleHandler
+                        ),
                 CreateFolder(
                         "project/src/main",
                         fileSystemHandler,
@@ -83,13 +84,14 @@ class BlueprintServiceShould {
                         environment,
                         consoleHandler
                 ),
-                CreateFolder(
-                        "project/src/main/resources",
-                        fileSystemHandler,
-                        environment,
-                        consoleHandler
+                        CreateFolder(
+                                "project/src/main/resources",
+                                fileSystemHandler,
+                                environment,
+                                consoleHandler
+                        )
                 )
-        ))
+        )
 
         assertThat(loadedTasks).isEqualTo(tasks)
     }
@@ -97,16 +99,17 @@ class BlueprintServiceShould {
     @Test
     fun `parse blueprint that has text files`() {
         val blueprintName = "blueprintName"
-        val blueprint = """
+        val blueprint =
+                """
         - type: folder
           name: project 
           children:
             - type: file
               name: build.gradle
-              content: dependencies list""".trimIndent()
+              content: dependencies list
+            """.trimIndent()
         val arguments = Arguments(blueprintName)
         every { blueprintReader.read(arguments) } returns Blueprint(blueprint)
-
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
@@ -132,17 +135,17 @@ class BlueprintServiceShould {
     @Test
     fun `parse blueprint with command`() {
         val blueprintName = "blueprintWithCommand"
-        val blueprint = """
+        val blueprint =
+                """
             ---
             - type: folder
               name: test-command
               children:
                 - type: command
                   command: gradle init
-        """.trimIndent()
+            """.trimIndent()
         val arguments = Arguments(blueprintName)
         every { blueprintReader.read(arguments) } returns Blueprint(blueprint)
-
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
@@ -176,11 +179,12 @@ class BlueprintServiceShould {
 
     @Test
     internal fun `parse CreateFile using content from file in folder`() {
-        val blueprint = """
+        val blueprint =
+                """
             - type: file
               name: build.gradle
               source: build.gradle
-        """.trimIndent()
+            """.trimIndent()
         val arguments = Arguments("multifile-blueprint")
         val files = mapOf(
                 "build.gradle" to "id 'kotlin'"
@@ -200,5 +204,4 @@ class BlueprintServiceShould {
         )
         assertThat(loadedTasks).isEqualTo(expectedTasks)
     }
-
 }

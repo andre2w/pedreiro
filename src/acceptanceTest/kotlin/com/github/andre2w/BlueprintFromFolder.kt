@@ -18,7 +18,7 @@ object BlueprintFromFolder : Spek({
 
         describe("when creating a project from a template in a folder") {
             pedreiroEnvironemnt.setup {
-                val blueprintPath = "$homeDir/.pedreiro/blueprints/${blueprintName}"
+                val blueprintPath = "$homeDir/.pedreiro/blueprints/$blueprintName"
                 every { fileSystemHandler.isFolder(blueprintPath) } returns true
                 every { fileSystemHandler.readFile("$blueprintPath/blueprint.yml") } returns fixtures("template")
                 every { fileSystemHandler.readFile("$blueprintPath/variables.yml") } returns fixtures("variables")
@@ -35,9 +35,9 @@ object BlueprintFromFolder : Spek({
                         fileSystemHandler.createFolder("$baseDir/test")
                         fileSystemHandler.createFolder("$baseDir/test/src")
                         fileSystemHandler.createFolder("$baseDir/test/src/main")
-                        fileSystemHandler.createFolder("${baseDir}/test/src/main/kotlin")
-                        fileSystemHandler.createFolder("${baseDir}/test/src/main/resources")
-                        fileSystemHandler.createFile("${baseDir}/test/build.gradle", ignoringLineEnding(fixtures("build_gradle_content.txt")))
+                        fileSystemHandler.createFolder("$baseDir/test/src/main/kotlin")
+                        fileSystemHandler.createFolder("$baseDir/test/src/main/resources")
+                        fileSystemHandler.createFile("$baseDir/test/build.gradle", ignoringLineEnding(fixtures("build_gradle_content.txt")))
                     }
                 }
             }

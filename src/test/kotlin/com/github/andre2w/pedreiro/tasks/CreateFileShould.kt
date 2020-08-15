@@ -15,11 +15,12 @@ class CreateFileShould {
         val fileSystemHandler = mockk<FileSystemHandler>(relaxUnitFun = true)
         val environment = mockk<LocalEnvironment>()
         val consoleHandler = mockk<ConsoleHandler>(relaxUnitFun = true)
-        val content = """
+        val content =
+                """
             plugins {
                 id 'java'
             }
-        """.trimIndent()
+            """.trimIndent()
         every { environment.currentDir() } returns "/home/andre/project"
 
         val createFile = CreateFile(

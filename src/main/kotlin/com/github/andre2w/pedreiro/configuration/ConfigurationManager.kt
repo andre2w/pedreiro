@@ -31,5 +31,4 @@ class ConfigurationManager(
 
     private fun normalizePath(configFilePath: String) =
         Paths.get(configFilePath).normalize().toString()
-
 }

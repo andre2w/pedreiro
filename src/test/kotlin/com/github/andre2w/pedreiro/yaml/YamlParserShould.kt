@@ -9,31 +9,37 @@ class YamlParserShould {
 
     @Test
     fun `parse object`() {
-        val yaml = """
+        val yaml =
+                """
             field: test
-        """.trimIndent()
+            """.trimIndent()
 
         val parsedYaml = yamlParser.parse(yaml) as YamlNode.Object
 
-        val expected = YamlNode.Object(mapOf(
-                "field" to "test"
-        ))
+        val expected = YamlNode.Object(
+                mapOf(
+                        "field" to "test"
+                )
+        )
         assertThat(parsedYaml).isEqualTo(expected)
     }
 
     @Test
     internal fun `parse list of objects`() {
-        val yaml = """
+        val yaml =
+                """
             - first_field: test
             - second_field: second value
-        """.trimIndent()
+            """.trimIndent()
 
         val parsedYaml = yamlParser.parse(yaml) as YamlNode.List
 
-        val expected = YamlNode.List(listOf(
-                YamlNode.Object(mapOf("first_field" to "test")),
-                YamlNode.Object(mapOf("second_field" to "second value"))
-        ))
+        val expected = YamlNode.List(
+                listOf(
+                        YamlNode.Object(mapOf("first_field" to "test")),
+                        YamlNode.Object(mapOf("second_field" to "second value"))
+                )
+        )
         assertThat(parsedYaml).isEqualTo(expected)
     }
 }

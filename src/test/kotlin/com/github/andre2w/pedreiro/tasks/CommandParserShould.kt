@@ -66,7 +66,7 @@ class CommandParserShould {
 
         val parsedCommand = commandParser.parse(command)
 
-        val expectedCommand = listOf("echo","this \'is a\' message")
+        val expectedCommand = listOf("echo", "this \'is a\' message")
         assertThat(parsedCommand).isEqualTo(expectedCommand)
     }
 

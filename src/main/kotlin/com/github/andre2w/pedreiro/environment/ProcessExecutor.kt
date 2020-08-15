@@ -10,7 +10,7 @@ class ProcessExecutor(
         private val commandParser: CommandParser,
         private val consoleHandler: ConsoleHandler
 ) {
-    fun execute(command: String, runFolder: String) : Int {
+    fun execute(command: String, runFolder: String): Int {
 
         val parsedCommand = commandParser.parse(command)
         consoleHandler.printDebug("Executing command: \"$parsedCommand\"")

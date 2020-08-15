@@ -22,5 +22,4 @@ class LocalEnvironmentShould {
 
         assertThat(environment.userHome()).isEqualTo(homeFolder)
     }
-
 }

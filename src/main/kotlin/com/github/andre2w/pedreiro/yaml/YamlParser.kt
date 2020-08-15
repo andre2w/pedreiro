@@ -6,11 +6,10 @@ import org.yaml.snakeyaml.Yaml
 @Prototype
 class YamlParser {
 
-    private val yamlParser = Yaml()
+    private val yaml = Yaml()
 
-    fun parse(yaml: String): YamlNode {
-        val keyValues = yamlParser.load<Any>(yaml)
+    fun parse(yamlFile: String): YamlNode {
+        val keyValues = yaml.load<Any>(yamlFile)
         return YamlNode.parse(keyValues)
     }
-
 }
