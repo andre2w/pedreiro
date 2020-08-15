@@ -14,7 +14,9 @@ class BlueprintReader(
         private val consoleHandler: ConsoleHandler,
         private val configurationManager: ConfigurationManager
 ) {
+
     private val handlebars: Handlebars = Handlebars()
+    private val yaml = Yaml()
 
     fun read(arguments: Arguments): Blueprint {
         val configuration = configurationManager.loadConfiguration()
@@ -28,11 +30,13 @@ class BlueprintReader(
     }
 
     private fun loadFromFile(blueprintPath: String, arguments: Arguments): String {
-        val blueprintTemplate = readFile("$blueprintPath.yml")
+        val blueprint = readFile("$blueprintPath.yml")
                 ?: readFile("$blueprintPath.yaml")
                 ?: throw BlueprintParsingException("Failed to read blueprint ${arguments.blueprintName}")
 
-        return parseTemplate(blueprintTemplate, arguments)
+        consoleHandler.print("Creating project from blueprint ${blueprint.second}")
+
+        return parseTemplate(blueprint.first, arguments)
     }
 
     private fun loadFromFolder(blueprintPath: String, arguments: Arguments): Blueprint {
@@ -44,17 +48,13 @@ class BlueprintReader(
         return Blueprint(blueprint, extraFiles)
     }
 
-    private fun readVariables(
-            blueprintPath: String,
-            arguments: Arguments
-    ): Arguments {
+
+    private fun readVariables(blueprintPath: String, arguments: Arguments): Arguments {
         return try {
             val variablesFile = loadFromFile("$blueprintPath/variables", arguments)
-
-            val yaml = Yaml()
-            val variables = yaml.load<Map<String,String>>(variablesFile)
+            val variables = yaml.load<Map<String, String>>(variablesFile)
             arguments.mergeWith(variables)
-        } catch (err : BlueprintParsingException) {
+        } catch (err: BlueprintParsingException) {
             arguments
         }
     }
@@ -77,19 +77,15 @@ class BlueprintReader(
         return Pair(file, extraFile)
     }
 
-    private fun parseTemplate(blueprintTemplate: String, arguments: Arguments) : String =
+    private fun parseTemplate(blueprintTemplate: String, arguments: Arguments): String =
             handlebars
                     .compileInline(blueprintTemplate)
                     .apply(arguments.extraArguments)
 
-    private fun readFile(blueprintPath: String) : String? {
-        consoleHandler.printDebug("Trying to read blueprint from file $blueprintPath")
-
-        val blueprint = fileSystemHandler.readFile(blueprintPath)
-        if (blueprint != null) {
-            consoleHandler.print("Creating project from blueprint ($blueprintPath)")
+    private fun readFile(blueprintPath: String): Pair<String, String>? {
+        consoleHandler.printDebug("Reading from file: $blueprintPath")
+        return fileSystemHandler.readFile(blueprintPath)?.let {
+            Pair(it, blueprintPath)
         }
-        return blueprint
     }
-
 }

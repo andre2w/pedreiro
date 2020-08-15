@@ -41,7 +41,7 @@ object StartingSimpleProject : Spek({
             it ("should print information about template creation and when its done") {
                 pedreiroEnvironment.assertions {
                     verify {
-                        consoleHandler.print("Creating project from blueprint ($blueprintPath)")
+                        consoleHandler.print("Creating project from blueprint $blueprintPath")
                         consoleHandler.print("Project created. You can start to work now.")
                         consoleHandler.exitWith(0)
                     }
