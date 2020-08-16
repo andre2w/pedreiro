@@ -277,14 +277,31 @@ blueprintTemplate
 
 ### Tests
 
-To run all the tests you can just execute `./gradlew clean check`.
+To run all the tests you can just execute `./gradlew check`.
 
 ### Fat Jar
 
-To build the project you can clone and execute `./gradlew sJ`, this will generate a fat jar with all the dependencies inside `build/libs`. 
+To build the project you can clone and execute `./gradlew assemble`, this will generate a fat jar with all the dependencies inside `build/libs`. 
 
-## Building the image
+## Building using native-image
 
+### Linux
+
+For linux builds you can use a a container to build the image, `docker-compose up -d` will start the container with GraalVM and native-image installed
+then you can enter the container and build from there, or install GraalVM through your package manager or SDKMAN.
+
+### Windows
+
+For windows you need to install GraalVM and native-image following this instructions: https://www.graalvm.org/docs/getting-started/windows
+After installing you need to build through the `x86 Native Tools Command Prompt`, building from your regular terminal might not work. 
+
+### Mac
+
+Install GraalVM using SDKMAN or Brew. 
+
+### Building the application
+
+After installing GraalVM and native-image you can go to the root of the project and execute (the wildcard will probably not work in Windows environments):
 ```
 native-image --static --no-server -cp build/libs/pedreiro-*-all.jar
 ```
