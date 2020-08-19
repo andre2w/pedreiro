@@ -10,18 +10,18 @@ class CommandParserShould {
     @Test
     fun `parse command to list of arguments`() {
         val expectedCommand = listOf(
-                "gradle",
-                "init",
-                "--type",
-                "java-application",
-                "--test-framework",
-                "junit",
-                "--dsl",
-                "groovy",
-                "--project-name",
-                "test",
-                "--package",
-                "com.example.test"
+            "gradle",
+            "init",
+            "--type",
+            "java-application",
+            "--test-framework",
+            "junit",
+            "--dsl",
+            "groovy",
+            "--project-name",
+            "test",
+            "--package",
+            "com.example.test"
         )
         val command = expectedCommand.joinToString(" ")
 

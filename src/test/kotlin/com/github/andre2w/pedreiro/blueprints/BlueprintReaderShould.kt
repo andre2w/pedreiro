@@ -20,7 +20,7 @@ class BlueprintReaderShould {
     private val configuration = PedreiroConfiguration("/home/user/pedreiro/.pedreiro/blueprints")
     private val consoleHandler = mockk<ConsoleHandler>(relaxUnitFun = true)
     private val blueprintTemplate =
-            """
+        """
         ---
         - type: folder
           name: "{{ project_name }}"
@@ -30,7 +30,7 @@ class BlueprintReaderShould {
         """.trimIndent()
 
     private val parsedTemplate =
-            """
+        """
         ---
         - type: folder
           name: "test"
@@ -87,13 +87,13 @@ class BlueprintReaderShould {
     @Test
     internal fun `read blueprint and other files in the folder`() {
         val template =
-                """
+            """
             - type: file
               name: build.gradle
               source: build.gradle
             """.trimIndent()
         val buildGradle =
-                """
+            """
             plugin {
               id 'kotlin'
             }
@@ -116,19 +116,19 @@ class BlueprintReaderShould {
     @Test
     internal fun `substitute variables in extra files`() {
         val template =
-                """
+            """
             - type: file
               name: build.gradle
               source: build.gradle
             """.trimIndent()
         val buildGradleTemplate =
-                """
+            """
             plugin {
               id 'kotlin' version: {{ kotlin_version }}
             }
             """.trimIndent()
         val buildGradle =
-                """
+            """
             plugin {
               id 'kotlin' version: 1.3.71
             }
@@ -151,7 +151,7 @@ class BlueprintReaderShould {
     @Test
     internal fun `throw exception when fail to load extra file`() {
         val template =
-                """
+            """
             - type: file
               name: build.gradle
               source: build.gradle
@@ -179,25 +179,25 @@ class BlueprintReaderShould {
     @Test
     internal fun `read variables file and use the values when reading templates`() {
         val template =
-                """
+            """
             - type: file
               name: build.gradle
               source: build.gradle
             """.trimIndent()
         val buildGradleTemplate =
-                """
+            """
             plugin {
               id 'kotlin' version: {{ kotlin_version }}
             }
             """.trimIndent()
         val buildGradle =
-                """
+            """
             plugin {
               id 'kotlin' version: 1.3.71
             }
             """.trimIndent()
         val variables =
-                """
+            """
             kotlin_version: 1.3.71
             """.trimIndent()
         val arguments = Arguments("test")

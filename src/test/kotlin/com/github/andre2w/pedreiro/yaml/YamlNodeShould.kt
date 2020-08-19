@@ -8,9 +8,9 @@ class YamlNodeShould {
     @Test
     fun `return Missing type when node does not exists`() {
         val yamlObject = YamlNode.Object(
-                mapOf(
-                        "field" to "text"
-                )
+            mapOf(
+                "field" to "text"
+            )
         )
 
         assertThat(yamlObject["invalid_field"]).isEqualTo(YamlNode.Missing)

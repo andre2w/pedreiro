@@ -16,7 +16,7 @@ class CreateFileShould {
         val environment = mockk<LocalEnvironment>()
         val consoleHandler = mockk<ConsoleHandler>(relaxUnitFun = true)
         val content =
-                """
+            """
             plugins {
                 id 'java'
             }
@@ -24,11 +24,11 @@ class CreateFileShould {
         every { environment.currentDir() } returns "/home/andre/project"
 
         val createFile = CreateFile(
-                "test-project/build.gradle",
-                content,
-                fileSystemHandler,
-                environment,
-                consoleHandler
+            "test-project/build.gradle",
+            content,
+            fileSystemHandler,
+            environment,
+            consoleHandler
         )
         createFile.execute()
 

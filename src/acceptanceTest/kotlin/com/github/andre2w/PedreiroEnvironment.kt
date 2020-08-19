@@ -12,14 +12,14 @@ import io.mockk.every
 import io.mockk.mockk
 
 class PedreiroEnvironment(
-        private val fixtures: FixtureLoader,
-        val fileSystemHandler: FileSystemHandler = mockk(relaxUnitFun = true),
-        val environment: LocalEnvironment = mockk(relaxUnitFun = true),
-        val consoleHandler: ConsoleHandler = mockk(relaxUnitFun = true),
-        val processExecutor: ProcessExecutor = mockk(relaxUnitFun = true),
-        val baseDir: String = "/home/user/projects",
-        val homeDir: String = "/home/user/pedreiro",
-        val configurationPath: String = "$homeDir/.pedreiro/configuration.yml"
+    private val fixtures: FixtureLoader,
+    val fileSystemHandler: FileSystemHandler = mockk(relaxUnitFun = true),
+    val environment: LocalEnvironment = mockk(relaxUnitFun = true),
+    val consoleHandler: ConsoleHandler = mockk(relaxUnitFun = true),
+    val processExecutor: ProcessExecutor = mockk(relaxUnitFun = true),
+    val baseDir: String = "/home/user/projects",
+    val homeDir: String = "/home/user/pedreiro",
+    val configurationPath: String = "$homeDir/.pedreiro/configuration.yml"
 ) {
 
     private val ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)

@@ -5,8 +5,8 @@ import javax.inject.Singleton
 
 @Singleton
 class Pedreiro(
-        private val blueprintService: BlueprintService,
-        private val scaffoldingService: ScaffoldingService
+    private val blueprintService: BlueprintService,
+    private val scaffoldingService: ScaffoldingService
 ) {
 
     fun build(arguments: Arguments) {

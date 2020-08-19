@@ -9,9 +9,9 @@ import javax.inject.Singleton
 
 @Singleton
 class ConfigurationManager(
-        private val fileSystemHandler: FileSystemHandler,
-        private val environment: LocalEnvironment,
-        private val consoleHandler: ConsoleHandler
+    private val fileSystemHandler: FileSystemHandler,
+    private val environment: LocalEnvironment,
+    private val consoleHandler: ConsoleHandler
 ) {
 
     private val yaml = Yaml()
@@ -22,7 +22,7 @@ class ConfigurationManager(
         consoleHandler.printDebug("Reading configuration from file: $configFilePath")
 
         val configuration = fileSystemHandler.readFile(configFilePath)
-                ?: throw ConfigurationNotFound(normalizePath(configFilePath))
+            ?: throw ConfigurationNotFound(normalizePath(configFilePath))
 
         val loadedConfig = yaml.load<Map<String, String>>(configuration)
 

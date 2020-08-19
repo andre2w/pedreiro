@@ -12,11 +12,11 @@ data class VerifyIgnoringLineEnding<T>(val expectedText: String) : Matcher<T> {
     }
 
     private fun compareStrings(expected: List<String>, actual: List<String>) =
-            expected.zip(actual).fold(true) { result, pair ->
-                pair.first == pair.second && result
-            }
+        expected.zip(actual).fold(true) { result, pair ->
+            pair.first == pair.second && result
+        }
 }
 
 inline fun <reified T : String> MockKMatcherScope.ignoringLineEnding(
-        text: String
+    text: String
 ): T = match(VerifyIgnoringLineEnding(text))

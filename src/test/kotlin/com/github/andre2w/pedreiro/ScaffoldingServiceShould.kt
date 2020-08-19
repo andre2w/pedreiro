@@ -25,8 +25,8 @@ class ScaffoldingServiceShould {
         val createFile = mockk<CreateFile>(relaxUnitFun = true)
 
         val blueprint = Tasks.from(
-                createFolder,
-                createFile
+            createFolder,
+            createFile
         )
 
         scaffoldingService.execute(blueprint)

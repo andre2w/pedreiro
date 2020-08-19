@@ -10,28 +10,28 @@ import picocli.CommandLine.*
 import javax.inject.Inject
 
 @Command(
-        name = "pedreiro", description = ["Pedreiro - A declarative scaffolding tool"],
-        mixinStandardHelpOptions = true
+    name = "pedreiro", description = ["Pedreiro - A declarative scaffolding tool"],
+    mixinStandardHelpOptions = true
 )
 class PedreiroCommand : Runnable {
 
     @Parameters(
-            paramLabel = "Blueprint",
-            arity = "1",
-            description = ["Name of the blueprint that you want built"]
+        paramLabel = "Blueprint",
+        arity = "1",
+        description = ["Name of the blueprint that you want built"]
     )
     private var blueprintName: String = ""
 
     @Option(
-            names = ["-a", "--arg"],
-            description = ["Extra variables to be used in your template"],
-            arity = "0..*"
+        names = ["-a", "--arg"],
+        description = ["Extra variables to be used in your template"],
+        arity = "0..*"
     )
     private var extraVariables: Map<String, String> = emptyMap()
 
     @Option(
-            names = ["-v", "--verbose"],
-            description = [""]
+        names = ["-v", "--verbose"],
+        description = [""]
     )
     private var verbose: Boolean = false
 

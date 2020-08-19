@@ -14,7 +14,7 @@ class ConfigurationManagerShould {
     private val blueprintsFolder = "/home/pedreiro/.pedreiro/blueprints"
     private val configFilePath = "/home/pedreiro/.pedreiro/configuration.yml"
     private val configurationFile =
-            """
+        """
         blueprintsFolder: "$blueprintsFolder"
         """.trimIndent()
     private val configuration = PedreiroConfiguration(blueprintsFolder)

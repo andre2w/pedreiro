@@ -18,10 +18,10 @@ class CreateFolderShould {
         every { environment.currentDir() } returns "/home/andre/projects"
 
         val createFolder = CreateFolder(
-                "test-folder",
-                fileSystemHandler,
-                environment,
-                consoleHandler
+            "test-folder",
+            fileSystemHandler,
+            environment,
+            consoleHandler
         )
         createFolder.execute()
 

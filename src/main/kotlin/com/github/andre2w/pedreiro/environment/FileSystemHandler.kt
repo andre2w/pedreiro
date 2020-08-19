@@ -32,7 +32,7 @@ class FileSystemHandler {
     fun listFilesIn(folderPath: String): List<String> {
         val files = Files.list(folderPath.toPath())
         return files.map { file -> file.fileName.toString() }
-                .collect(toList())
+            .collect(toList())
     }
 
     private fun String.toPath() = Paths.get(this)

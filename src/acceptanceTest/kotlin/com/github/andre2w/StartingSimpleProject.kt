@@ -51,18 +51,18 @@ object StartingSimpleProject : Spek({
 
         describe("create a project executing a command") {
             val command = listOf(
-                    "gradle",
-                    "init",
-                    "--type",
-                    "java-application",
-                    "--test-framework",
-                    "junit",
-                    "--dsl",
-                    "groovy",
-                    "--project-name",
-                    "test",
-                    "--package",
-                    "com.example.test"
+                "gradle",
+                "init",
+                "--type",
+                "java-application",
+                "--test-framework",
+                "junit",
+                "--dsl",
+                "groovy",
+                "--project-name",
+                "test",
+                "--package",
+                "com.example.test"
             ).joinToString(" ")
 
             pedreiroEnvironment.setup {

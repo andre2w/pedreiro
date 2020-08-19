@@ -19,12 +19,12 @@ sealed class ParseResult {
 
 @Singleton
 class BlueprintService(
-        private val blueprintReader: BlueprintReader,
-        private val fileSystemHandler: FileSystemHandler,
-        private val environment: LocalEnvironment,
-        private val processExecutor: ProcessExecutor,
-        private val consoleHandler: ConsoleHandler,
-        private val yamlParser: YamlParser
+    private val blueprintReader: BlueprintReader,
+    private val fileSystemHandler: FileSystemHandler,
+    private val environment: LocalEnvironment,
+    private val processExecutor: ProcessExecutor,
+    private val consoleHandler: ConsoleHandler,
+    private val yamlParser: YamlParser
 ) {
 
     fun loadBlueprint(arguments: Arguments): Tasks {
@@ -40,9 +40,9 @@ class BlueprintService(
     }
 
     private fun parse(
-            yamlNode: YamlNode,
-            blueprint: Blueprint,
-            level: List<String> = ArrayList()
+        yamlNode: YamlNode,
+        blueprint: Blueprint,
+        level: List<String> = ArrayList()
     ): List<Task> {
         return when (yamlNode) {
             is YamlNode.List -> parseList(level, blueprint, yamlNode)
@@ -67,12 +67,12 @@ class BlueprintService(
     }
 
     private fun parseList(level: List<String>, blueprint: Blueprint, yamlNode: YamlNode.List) =
-            yamlNode.flatMap { node -> parse(node, blueprint, level) }
+        yamlNode.flatMap { node -> parse(node, blueprint, level) }
 
     private fun parseCreateFolder(
-            level: List<String>,
-            blueprint: Blueprint,
-            yamlNode: YamlNode.Object
+        level: List<String>,
+        blueprint: Blueprint,
+        yamlNode: YamlNode.Object
     ): ParseResult.Many {
         val result = ArrayList<Task>()
 
@@ -91,9 +91,9 @@ class BlueprintService(
     }
 
     private fun parseCreateFile(
-            path: String,
-            blueprint: Blueprint,
-            yamlNode: YamlNode.Object
+        path: String,
+        blueprint: Blueprint,
+        yamlNode: YamlNode.Object
     ): ParseResult.Single {
 
         val filePath = if (path == "") {
@@ -119,20 +119,20 @@ class BlueprintService(
 
     private fun createFolderWith(currentLevel: List<String>): CreateFolder {
         return CreateFolder(
-                currentLevel.asPath(),
-                fileSystemHandler,
-                environment,
-                consoleHandler
+            currentLevel.asPath(),
+            fileSystemHandler,
+            environment,
+            consoleHandler
         )
     }
 
     private fun createFileWith(filePath: String, content: String): CreateFile {
         return CreateFile(
-                filePath,
-                content,
-                fileSystemHandler,
-                environment,
-                consoleHandler
+            filePath,
+            content,
+            fileSystemHandler,
+            environment,
+            consoleHandler
         )
     }
 

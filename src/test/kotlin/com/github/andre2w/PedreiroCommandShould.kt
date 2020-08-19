@@ -74,11 +74,11 @@ class PedreiroCommandShould {
 
     private fun parsedArguments(): Arguments {
         return Arguments(
-                "testBlueprint",
-                mapOf(
-                        "test" to "blueprint",
-                        "other" to "field"
-                )
+            "testBlueprint",
+            mapOf(
+                "test" to "blueprint",
+                "other" to "field"
+            )
         )
     }
 

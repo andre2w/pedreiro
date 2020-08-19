@@ -10,14 +10,14 @@ import java.time.format.DateTimeFormatter
 class FileSystemHandlerShould {
 
     private val fileContent =
-            "---" + System.lineSeparator() +
-                    "- name: project" + System.lineSeparator() +
-                    "type: folder" + System.lineSeparator() +
-                    "children:" + System.lineSeparator() +
-                    "- name: build.gradle" + System.lineSeparator() +
-                    "type: file" + System.lineSeparator() +
-                    "content: |" + System.lineSeparator() +
-                    "apply plugin: kotlin"
+        "---" + System.lineSeparator() +
+            "- name: project" + System.lineSeparator() +
+            "type: folder" + System.lineSeparator() +
+            "children:" + System.lineSeparator() +
+            "- name: build.gradle" + System.lineSeparator() +
+            "type: file" + System.lineSeparator() +
+            "content: |" + System.lineSeparator() +
+            "apply plugin: kotlin"
 
     private val fileSystemHandler = FileSystemHandler()
 

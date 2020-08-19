@@ -47,17 +47,17 @@ class CommandParser {
     private fun spaceOutsideString(character: Char, inString: Boolean) = character == ' ' && !inString
 
     private fun startingQuoteFrom(startingQuote: Char, character: Char): Char =
-            if (startingQuote != ' ') {
-                ' '
-            } else {
-                character
-            }
+        if (startingQuote != ' ') {
+            ' '
+        } else {
+            character
+        }
 
     private fun isQuotation(character: Char, isEscapedChar: Boolean, startingQuote: Char) =
-            character in delimiters && !isEscapedChar && characterMatchesStartingQuote(character, startingQuote)
+        character in delimiters && !isEscapedChar && characterMatchesStartingQuote(character, startingQuote)
 
     private fun characterMatchesStartingQuote(character: Char, startingQuote: Char) =
-            character == startingQuote || startingQuote == ' '
+        character == startingQuote || startingQuote == ' '
 
     private fun Char.isBackslash(): Boolean = this == '\\'
 }

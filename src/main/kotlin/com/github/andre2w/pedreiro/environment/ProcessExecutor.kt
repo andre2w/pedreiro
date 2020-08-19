@@ -7,8 +7,8 @@ import javax.inject.Singleton
 
 @Singleton
 class ProcessExecutor(
-        private val commandParser: CommandParser,
-        private val consoleHandler: ConsoleHandler
+    private val commandParser: CommandParser,
+    private val consoleHandler: ConsoleHandler
 ) {
     fun execute(command: String, runFolder: String): Int {
 
@@ -16,9 +16,9 @@ class ProcessExecutor(
         consoleHandler.printDebug("Executing command: \"$parsedCommand\"")
 
         val process = ProcessBuilder()
-                .command(parsedCommand)
-                .directory(File(runFolder))
-                .start()
+            .command(parsedCommand)
+            .directory(File(runFolder))
+            .start()
 
         InputStreamReader(process.inputStream).useLines { lines ->
             lines.forEach(consoleHandler::printDebug)

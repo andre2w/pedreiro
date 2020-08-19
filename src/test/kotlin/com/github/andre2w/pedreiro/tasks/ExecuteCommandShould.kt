@@ -20,10 +20,10 @@ class ExecuteCommandShould {
         every { environment.currentDir() } returns runFolder
 
         val executeCommand = ExecuteCommand(
-                "gradle wrapper",
-                "test-project",
-                processExecutor,
-                environment
+            "gradle wrapper",
+            "test-project",
+            processExecutor,
+            environment
         )
         executeCommand.execute()
 

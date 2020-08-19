@@ -38,7 +38,7 @@ class BlueprintServiceShould {
     fun `parse blueprint that only create folders`() {
         val blueprintName = "blueprintName"
         val blueprint =
-                """
+            """
         - type: folder
           name: project 
           children:
@@ -59,38 +59,38 @@ class BlueprintServiceShould {
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
         val tasks = Tasks.from(
-                listOf(
-                        CreateFolder(
-                                "project",
-                                fileSystemHandler,
-                                environment,
-                                consoleHandler
-                        ),
-                        CreateFolder(
-                                "project/src",
-                                fileSystemHandler,
-                                environment,
-                                consoleHandler
-                        ),
+            listOf(
                 CreateFolder(
-                        "project/src/main",
-                        fileSystemHandler,
-                        environment,
-                        consoleHandler
+                    "project",
+                    fileSystemHandler,
+                    environment,
+                    consoleHandler
                 ),
                 CreateFolder(
-                        "project/src/main/kotlin",
-                        fileSystemHandler,
-                        environment,
-                        consoleHandler
+                    "project/src",
+                    fileSystemHandler,
+                    environment,
+                    consoleHandler
                 ),
-                        CreateFolder(
-                                "project/src/main/resources",
-                                fileSystemHandler,
-                                environment,
-                                consoleHandler
-                        )
+                CreateFolder(
+                    "project/src/main",
+                    fileSystemHandler,
+                    environment,
+                    consoleHandler
+                ),
+                CreateFolder(
+                    "project/src/main/kotlin",
+                    fileSystemHandler,
+                    environment,
+                    consoleHandler
+                ),
+                CreateFolder(
+                    "project/src/main/resources",
+                    fileSystemHandler,
+                    environment,
+                    consoleHandler
                 )
+            )
         )
 
         assertThat(loadedTasks).isEqualTo(tasks)
@@ -100,7 +100,7 @@ class BlueprintServiceShould {
     fun `parse blueprint that has text files`() {
         val blueprintName = "blueprintName"
         val blueprint =
-                """
+            """
         - type: folder
           name: project 
           children:
@@ -114,19 +114,19 @@ class BlueprintServiceShould {
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
         val tasks = Tasks.from(
-                CreateFolder(
-                        "project",
-                        fileSystemHandler,
-                        environment,
-                        consoleHandler
-                ),
-                CreateFile(
-                        "project/build.gradle",
-                        "dependencies list",
-                        fileSystemHandler,
-                        environment,
-                        consoleHandler
-                )
+            CreateFolder(
+                "project",
+                fileSystemHandler,
+                environment,
+                consoleHandler
+            ),
+            CreateFile(
+                "project/build.gradle",
+                "dependencies list",
+                fileSystemHandler,
+                environment,
+                consoleHandler
+            )
         )
 
         assertThat(loadedTasks).isEqualTo(tasks)
@@ -136,7 +136,7 @@ class BlueprintServiceShould {
     fun `parse blueprint with command`() {
         val blueprintName = "blueprintWithCommand"
         val blueprint =
-                """
+            """
             ---
             - type: folder
               name: test-command
@@ -150,18 +150,18 @@ class BlueprintServiceShould {
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
         val tasks = Tasks.from(
-                CreateFolder(
-                        "test-command",
-                        fileSystemHandler,
-                        environment,
-                        consoleHandler
-                ),
-                ExecuteCommand(
-                        "gradle init",
-                        "test-command",
-                        processExecutor,
-                        environment
-                )
+            CreateFolder(
+                "test-command",
+                fileSystemHandler,
+                environment,
+                consoleHandler
+            ),
+            ExecuteCommand(
+                "gradle init",
+                "test-command",
+                processExecutor,
+                environment
+            )
         )
 
         assertThat(loadedTasks).isEqualTo(tasks)
@@ -180,27 +180,27 @@ class BlueprintServiceShould {
     @Test
     internal fun `parse CreateFile using content from file in folder`() {
         val blueprint =
-                """
+            """
             - type: file
               name: build.gradle
               source: build.gradle
             """.trimIndent()
         val arguments = Arguments("multifile-blueprint")
         val files = mapOf(
-                "build.gradle" to "id 'kotlin'"
+            "build.gradle" to "id 'kotlin'"
         )
         every { blueprintReader.read(arguments) } returns Blueprint(blueprint, files)
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
         val expectedTasks = Tasks.from(
-                CreateFile(
-                        "build.gradle",
-                        "id 'kotlin'",
-                        fileSystemHandler,
-                        environment,
-                        consoleHandler
-                )
+            CreateFile(
+                "build.gradle",
+                "id 'kotlin'",
+                fileSystemHandler,
+                environment,
+                consoleHandler
+            )
         )
         assertThat(loadedTasks).isEqualTo(expectedTasks)
     }
