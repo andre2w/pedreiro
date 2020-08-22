@@ -10,14 +10,14 @@ class ConsoleHandlerShould {
 
     @ParameterizedTest
     @CsvSource(
-            "WINDOWS,WINDOWS",
-            "Windows 10,WINDOWS",
-            "Linux x86, LINUX",
-            "windows, WINDOWS",
-            "Mac OS X, MAC_OS",
-            "mac os x, MAC_OS"
+        "WINDOWS,WINDOWS",
+        "Windows 10,WINDOWS",
+        "Linux x86, LINUX",
+        "windows, WINDOWS",
+        "Mac OS X, MAC_OS",
+        "mac os x, MAC_OS"
     )
-    internal fun `parse OS name into Platform`(osName : String, platform: Platform) {
+    internal fun `parse OS name into Platform`(osName: String, platform: Platform) {
         val environment = mockk<LocalEnvironment>()
         val consoleHandler = ConsoleHandler(environment)
         every { environment.osName() } returns osName
