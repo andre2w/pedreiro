@@ -143,6 +143,22 @@ The command will be executed inside the folder that is declared.
       command: touch file.txt
 ```
 
+In case you have a command that is different depending on the platform you can use put the name of the platform instead of
+`command`, in case isn't found it will fallback to `command`.
+
+```yaml
+# A command for each platform
+- type: command
+  win: gradle.bat
+  linux: /usr/local/bin/gradle
+  mac: /Users/andre/.gradle/gradle
+
+# Specifying one platform and fallback to the remaining
+- type: command
+  win: gradle.bat
+  command: gradle
+```
+
 #### Variables
 
 You can declare variables in your template so you can set them when calling the blueprint. The blueprint is rendered using 

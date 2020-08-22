@@ -3,10 +3,7 @@ package com.github.andre2w.pedreiro.blueprints
 import com.github.andre2w.pedreiro.Arguments
 import com.github.andre2w.pedreiro.configuration.ConfigurationManager
 import com.github.andre2w.pedreiro.configuration.PedreiroConfiguration
-import com.github.andre2w.pedreiro.environment.ConsoleHandler
-import com.github.andre2w.pedreiro.environment.FileSystemHandler
-import com.github.andre2w.pedreiro.environment.LocalEnvironment
-import com.github.andre2w.pedreiro.environment.ProcessExecutor
+import com.github.andre2w.pedreiro.environment.*
 import com.github.andre2w.pedreiro.tasks.*
 import com.github.andre2w.pedreiro.yaml.YamlParser
 import io.mockk.clearAllMocks
@@ -146,6 +143,7 @@ class BlueprintServiceShould {
             """.trimIndent()
         val arguments = Arguments(blueprintName)
         every { blueprintReader.read(arguments) } returns Blueprint(blueprint)
+        every { consoleHandler.currentPlatform() } returns Platform.WINDOWS
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
@@ -202,6 +200,25 @@ class BlueprintServiceShould {
                 consoleHandler
             )
         )
+        assertThat(loadedTasks).isEqualTo(expectedTasks)
+    }
+
+    @Test
+    fun `retrieve command based on current platform`() {
+        val blueprint =
+            """
+            - type: command
+              win: win.bat
+              command: command.sh
+            """.trimIndent()
+        val arguments = Arguments("platform-blueprint")
+        every { blueprintReader.read(arguments) } returns Blueprint(blueprint, emptyMap())
+        every { consoleHandler.currentPlatform() } returns Platform.WINDOWS
+
+        val loadedTasks = blueprintService.loadBlueprint(arguments)
+
+        val expectedTasks = Tasks.from(
+            ExecuteCommand("win.bat", "", processExecutor, environment))
         assertThat(loadedTasks).isEqualTo(expectedTasks)
     }
 }
