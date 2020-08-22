@@ -114,7 +114,12 @@ class BlueprintService(
     }
 
     private fun parseCommand(path: String, yamlNode: YamlNode.Object): ParseResult.Single {
-        return ParseResult.Single(ExecuteCommand(yamlNode.textValue("command"), path, processExecutor, environment))
+        val platform = consoleHandler.currentPlatform()
+        val command = when (val node = yamlNode[platform.shortName]) {
+            is YamlNode.Value -> node.asText()
+            else -> yamlNode.textValue("command")
+        }
+        return ParseResult.Single(ExecuteCommand(command, path, processExecutor, environment))
     }
 
     private fun createFolderWith(currentLevel: List<String>): CreateFolder {
