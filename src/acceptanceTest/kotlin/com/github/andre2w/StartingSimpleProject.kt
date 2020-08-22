@@ -2,6 +2,7 @@ package com.github.andre2w
 
 import com.github.andre2w.fixtures.FixtureLoader
 import com.github.andre2w.matchers.ignoringLineEnding
+import com.github.andre2w.pedreiro.environment.Platform
 import io.mockk.every
 import io.mockk.verify
 import org.spekframework.spek2.Spek
@@ -68,6 +69,7 @@ object StartingSimpleProject : Spek({
             pedreiroEnvironment.setup {
                 every { fileSystemHandler.readFile(blueprintPath) } returns fixtures("command_template")
                 every { processExecutor.execute(command, "$baseDir/test") } returns 0
+                every { consoleHandler.currentPlatform() } returns Platform.UNSUPPORTED
             }
 
             pedreiroEnvironment.execute(arrayOf(blueprintName))
