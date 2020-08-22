@@ -13,6 +13,9 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
+import org.junit.jupiter.params.provider.Arguments as JunitArguments
 
 class BlueprintServiceShould {
 
@@ -203,22 +206,27 @@ class BlueprintServiceShould {
         assertThat(loadedTasks).isEqualTo(expectedTasks)
     }
 
-    @Test
-    fun `retrieve command based on current platform`() {
-        val blueprint =
-            """
-            - type: command
-              win: win.bat
-              command: command.sh
-            """.trimIndent()
+    @ParameterizedTest
+    @MethodSource("commandBlueprints")
+    fun `retrieve command based on current platform`(blueprint : String, command: String, platform: Platform) {
         val arguments = Arguments("platform-blueprint")
         every { blueprintReader.read(arguments) } returns Blueprint(blueprint, emptyMap())
-        every { consoleHandler.currentPlatform() } returns Platform.WINDOWS
+        every { consoleHandler.currentPlatform() } returns platform
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
-
         val expectedTasks = Tasks.from(
-            ExecuteCommand("win.bat", "", processExecutor, environment))
+            ExecuteCommand(command, "", processExecutor, environment))
         assertThat(loadedTasks).isEqualTo(expectedTasks)
     }
+
+    companion object {
+        @JvmStatic
+        fun commandBlueprints() = listOf(
+                JunitArguments.of("- type: command\n  win: win.bat\n  command: command.sh", "win.bat", Platform.WINDOWS ),
+                JunitArguments.of("- type: command\n  mac: mac.sh\n  command: command.sh", "mac.sh", Platform.MAC_OS ),
+                JunitArguments.of("- type: command\n  linux: linux.sh\n  command: command.sh", "linux.sh", Platform.LINUX ),
+                JunitArguments.of("- type: command\n  win: command.bat\n  command: command.sh", "command.sh", Platform.LINUX )
+        )
+    }
 }
+
