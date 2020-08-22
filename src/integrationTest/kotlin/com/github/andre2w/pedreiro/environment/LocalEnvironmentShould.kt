@@ -22,4 +22,13 @@ class LocalEnvironmentShould {
 
         assertThat(environment.userHome()).isEqualTo(homeFolder)
     }
+
+    @Test
+    fun `know user operating system`() {
+        val os = System.getProperty("os.name")
+
+        val environment = LocalEnvironment()
+
+        assertThat(environment.osName()).isEqualTo(os)
+    }
 }
