@@ -208,25 +208,25 @@ class BlueprintServiceShould {
 
     @ParameterizedTest
     @MethodSource("commandBlueprints")
-    fun `retrieve command based on current platform`(blueprint : String, command: String, platform: Platform) {
+    fun `retrieve command based on current platform`(blueprint: String, command: String, platform: Platform) {
         val arguments = Arguments("platform-blueprint")
         every { blueprintReader.read(arguments) } returns Blueprint(blueprint, emptyMap())
         every { consoleHandler.currentPlatform() } returns platform
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
         val expectedTasks = Tasks.from(
-            ExecuteCommand(command, "", processExecutor, environment))
+            ExecuteCommand(command, "", processExecutor, environment)
+        )
         assertThat(loadedTasks).isEqualTo(expectedTasks)
     }
 
     companion object {
         @JvmStatic
         fun commandBlueprints() = listOf(
-                JunitArguments.of("- type: command\n  win: win.bat\n  command: command.sh", "win.bat", Platform.WINDOWS ),
-                JunitArguments.of("- type: command\n  mac: mac.sh\n  command: command.sh", "mac.sh", Platform.MAC_OS ),
-                JunitArguments.of("- type: command\n  linux: linux.sh\n  command: command.sh", "linux.sh", Platform.LINUX ),
-                JunitArguments.of("- type: command\n  win: command.bat\n  command: command.sh", "command.sh", Platform.LINUX )
+            JunitArguments.of("- type: command\n  win: win.bat\n  command: command.sh", "win.bat", Platform.WINDOWS),
+            JunitArguments.of("- type: command\n  mac: mac.sh\n  command: command.sh", "mac.sh", Platform.MAC_OS),
+            JunitArguments.of("- type: command\n  linux: linux.sh\n  command: command.sh", "linux.sh", Platform.LINUX),
+            JunitArguments.of("- type: command\n  win: command.bat\n  command: command.sh", "command.sh", Platform.LINUX)
         )
     }
 }
-
