@@ -4,7 +4,7 @@ import javax.inject.Singleton
 import kotlin.system.exitProcess
 
 @Singleton
-class ConsoleHandler {
+class ConsoleHandler(private val environment: LocalEnvironment) {
 
     private var debug: Boolean = false
 
@@ -29,6 +29,12 @@ class ConsoleHandler {
     }
 
     fun currentPlatform(): Platform {
-        TODO()
+        val osName = environment.osName()
+        return when {
+            osName.contains("windows", ignoreCase = true) -> Platform.WINDOWS
+            osName.contains("mac", ignoreCase = true) -> Platform.MAC_OS
+            osName.contains("linux", ignoreCase = true) -> Platform.LINUX
+            else -> Platform.UNSUPPORTED
+        }
     }
 }

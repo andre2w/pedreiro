@@ -15,7 +15,7 @@ class ConsoleHandlerShould {
         val text = "text to be printed"
         System.setOut(PrintStream(byteArrayOutputStream))
 
-        val consoleHandler = ConsoleHandler()
+        val consoleHandler = ConsoleHandler(LocalEnvironment())
         consoleHandler.print(text)
 
         assertThat("$text${lineSeparator()}").isEqualTo(String(byteArrayOutputStream.toByteArray()))
@@ -29,7 +29,7 @@ class ConsoleHandlerShould {
         val text = "text to be printed"
         System.setErr(PrintStream(byteArrayOutputStream))
 
-        val consoleHandler = ConsoleHandler()
+        val consoleHandler = ConsoleHandler(LocalEnvironment())
         consoleHandler.printError(text)
 
         assertThat("$text${lineSeparator()}").isEqualTo(String(byteArrayOutputStream.toByteArray()))
@@ -44,7 +44,7 @@ class ConsoleHandlerShould {
         val printedText = "text to be printed"
         System.setOut(PrintStream(byteArrayOutputStream))
 
-        val consoleHandler = ConsoleHandler()
+        val consoleHandler = ConsoleHandler(LocalEnvironment())
         consoleHandler.printDebug(hiddenText)
         consoleHandler.activeDebugMode()
         consoleHandler.printDebug(printedText)

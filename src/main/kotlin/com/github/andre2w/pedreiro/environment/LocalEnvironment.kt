@@ -8,4 +8,6 @@ class LocalEnvironment {
     fun currentDir(): String = System.getProperty("user.dir")
 
     fun userHome(): String = System.getProperty("user.home")
+
+    fun osName(): String = System.getProperty("os.name")
 }
