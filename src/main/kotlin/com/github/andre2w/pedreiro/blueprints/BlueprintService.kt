@@ -10,12 +10,8 @@ import com.github.andre2w.pedreiro.yaml.InvalidNodeType
 import com.github.andre2w.pedreiro.yaml.YamlNode
 import com.github.andre2w.pedreiro.yaml.YamlParser
 import org.yaml.snakeyaml.parser.ParserException
+import java.util.*
 import javax.inject.Singleton
-
-sealed class ParseResult {
-    data class Single(val task: Task) : ParseResult()
-    data class Many(val tasks: List<Task>) : ParseResult()
-}
 
 @Singleton
 class BlueprintService(
@@ -36,66 +32,28 @@ class BlueprintService(
             throw BlueprintParsingException("Failed to parse blueprint ${arguments.blueprintName}")
         }
 
-        return Tasks.from(parse(blueprintTasks, blueprint))
+        val parseableObjects = parseableObject(blueprintTasks)
+
+        return parseableObjects
+            .map { parseObject(it.node, it.level, blueprint) }
+            .let(Tasks.Companion::from)
     }
 
-    private fun parse(
-        yamlNode: YamlNode,
-        blueprint: Blueprint,
-        level: List<String> = ArrayList()
-    ): List<Task> {
-        return when (yamlNode) {
-            is YamlNode.List -> parseList(level, blueprint, yamlNode)
-            is YamlNode.Object -> parseObject(yamlNode, level, blueprint)
-            else -> throw IllegalStateException()
-        }
-    }
-
-    private fun parseObject(yamlNode: YamlNode.Object, level: List<String>, blueprint: Blueprint): List<Task> {
-
-        val parsedResult = when (val objectType = yamlNode.textValue("type")) {
+    private fun parseObject(yamlNode: YamlNode.Object, level: List<String>, blueprint: Blueprint): Task {
+        return when (val objectType = yamlNode.textValue("type")) {
             "command" -> parseCommand(level.asPath(), yamlNode)
             "file" -> parseCreateFile(level.asPath(), blueprint, yamlNode)
-            "folder" -> parseCreateFolder(level, blueprint, yamlNode)
+            "folder" -> parseCreateFolder(level, yamlNode)
             else -> throw BlueprintParsingException("Invalid type of $objectType")
         }
-
-        return when (parsedResult) {
-            is ParseResult.Many -> parsedResult.tasks
-            is ParseResult.Single -> listOf(parsedResult.task)
-        }
     }
 
-    private fun parseList(level: List<String>, blueprint: Blueprint, yamlNode: YamlNode.List) =
-        yamlNode.flatMap { node -> parse(node, blueprint, level) }
-
-    private fun parseCreateFolder(
-        level: List<String>,
-        blueprint: Blueprint,
-        yamlNode: YamlNode.Object
-    ): ParseResult.Many {
-        val result = ArrayList<Task>()
-
+    private fun parseCreateFolder(level: List<String>, yamlNode: YamlNode.Object): Task {
         val currentLevel = level + yamlNode.textValue("name")
-
-        result.add(createFolderWith(currentLevel))
-
-        val childTasks = when (val children = yamlNode["children"]) {
-            is YamlNode.List -> parseList(currentLevel, blueprint, children)
-            is YamlNode.Missing -> emptyList()
-            else -> throw InvalidNodeType("children field should have have a list")
-        }
-        result.addAll(childTasks)
-
-        return ParseResult.Many(result)
+        return createFolderWith(currentLevel)
     }
 
-    private fun parseCreateFile(
-        path: String,
-        blueprint: Blueprint,
-        yamlNode: YamlNode.Object
-    ): ParseResult.Single {
-
+    private fun parseCreateFile(path: String, blueprint: Blueprint, yamlNode: YamlNode.Object): Task {
         val filePath = if (path == "") {
             yamlNode.textValue("name")
         } else {
@@ -108,18 +66,16 @@ class BlueprintService(
             else -> throw InvalidNodeType("Folder type should have text in content field or source pointing to a file")
         }
 
-        val createFile = createFileWith(filePath, content)
-
-        return ParseResult.Single(createFile)
+        return createFileWith(filePath, content)
     }
 
-    private fun parseCommand(path: String, yamlNode: YamlNode.Object): ParseResult.Single {
+    private fun parseCommand(path: String, yamlNode: YamlNode.Object): Task {
         val platform = consoleHandler.currentPlatform()
         val command = when (val node = yamlNode[platform.shortName]) {
             is YamlNode.Value -> node.asText()
             else -> yamlNode.textValue("command")
         }
-        return ParseResult.Single(ExecuteCommand(command, path, processExecutor, environment))
+        return ExecuteCommand(command, path, processExecutor, environment)
     }
 
     private fun createFolderWith(currentLevel: List<String>): CreateFolder {
@@ -132,13 +88,7 @@ class BlueprintService(
     }
 
     private fun createFileWith(filePath: String, content: String): CreateFile {
-        return CreateFile(
-            filePath,
-            content,
-            fileSystemHandler,
-            environment,
-            consoleHandler
-        )
+        return CreateFile(filePath, content, fileSystemHandler, environment, consoleHandler)
     }
 
     private fun List<String>.asPath() = this.joinToString("/")
@@ -149,4 +99,39 @@ class BlueprintService(
             else -> throw InvalidNodeType("Type must contain a string, found: $typeNode")
         }
     }
+
+    private fun parseableObject(node: YamlNode, level: List<String> = emptyList()): List<ParseableObject> {
+        val result = LinkedList<ParseableObject>()
+
+        val list = when (node) {
+            is YamlNode.Object -> parseSingleObject(node, level)
+            is YamlNode.List -> node.flatMap { parseableObject(it, level) }
+            else -> emptyList()
+        }
+
+        result.addAll(list)
+
+        return result
+    }
+
+    private fun parseSingleObject(node: YamlNode.Object, level: List<String>): List<ParseableObject> {
+        val result = LinkedList<ParseableObject>()
+
+        result.add(ParseableObject(level, node))
+
+        if (node.textValue("type") == "folder") {
+            val children = when (val child = node["children"]) {
+                is YamlNode.List -> child.flatMap { parseableObject(it, level + node.textValue("name")) }
+                else -> emptyList()
+            }
+            result.addAll(children)
+        }
+
+        return result
+    }
 }
+
+data class ParseableObject(
+    val level: List<String>,
+    val node: YamlNode.Object
+)
