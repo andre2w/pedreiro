@@ -26,7 +26,8 @@ class BlueprintServiceShould {
     private val configurationManager = mockk<ConfigurationManager>()
     private val consoleHandler = mockk<ConsoleHandler>()
     private val configuration = PedreiroConfiguration("/home/user/pedreiro/.pedreiro/blueprints")
-    private val blueprintService = BlueprintService(blueprintReader, fileSystemHandler, environment, processExecutor, consoleHandler, YamlParser())
+    private val taskFactory = TaskFactory(consoleHandler, fileSystemHandler, environment, processExecutor)
+    private val blueprintService = BlueprintService(blueprintReader, YamlParser(), taskFactory)
 
     @BeforeEach
     fun setUp() {
