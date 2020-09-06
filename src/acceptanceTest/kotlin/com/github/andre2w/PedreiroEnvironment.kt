@@ -32,6 +32,7 @@ class PedreiroEnvironment(
     private fun setupStubs() {
         every { environment.currentDir() } returns baseDir
         every { environment.userHome() } returns homeDir
+        every { environment.variable("PEDREIRO_CONFIG_PATH") } returns null
         every { fileSystemHandler.readFile(configurationPath) } returns fixtures("configuration")
     }
 

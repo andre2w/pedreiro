@@ -183,12 +183,15 @@ The configuration file must contain where the application will look for the blue
 Example:
 
 ```yaml
-# ~/andre/.pedreiro./configuration.yml
+# ~/andre/.pedreiro/configuration.yml
 ---
 blueprintsFolder: /Users/andre/.pedreiro/blueprints
 ```
 
 Right now you must create the folder and add the configuration file there manually.
+
+In case you want to use a different folder for the configuration you can declare the environment variable
+`PEDREIRO_CONFIG_PATH` with the path for the configuration file. 
 
 ## Blueprint Folder
 

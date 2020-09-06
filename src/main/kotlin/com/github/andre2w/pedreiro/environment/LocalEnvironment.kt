@@ -10,4 +10,6 @@ class LocalEnvironment {
     fun userHome(): String = System.getProperty("user.home")
 
     fun osName(): String = System.getProperty("os.name")
+
+    fun variable(name: String): String? = System.getenv(name)
 }

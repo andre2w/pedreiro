@@ -31,4 +31,14 @@ class LocalEnvironmentShould {
 
         assertThat(environment.osName()).isEqualTo(os)
     }
+
+    @Test
+    internal fun `be able to retrieve environment variables`() {
+        val variable = "JAVA_HOME"
+        val expectedValue = System.getenv(variable)
+
+        val environment = LocalEnvironment()
+
+        assertThat(environment.variable(variable)).isEqualTo(expectedValue)
+    }
 }

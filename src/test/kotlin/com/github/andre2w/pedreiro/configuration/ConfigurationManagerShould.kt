@@ -3,9 +3,11 @@ package com.github.andre2w.pedreiro.configuration
 import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
+import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -22,8 +24,14 @@ class ConfigurationManagerShould {
     private val environment = mockk<LocalEnvironment>()
     private val consoleHandler = mockk<ConsoleHandler>(relaxUnitFun = true)
 
+    @BeforeEach
+    internal fun setUp() {
+        clearAllMocks()
+    }
+
     @Test
     fun `retrieve configurations from the file system`() {
+        every { environment.variable("PEDREIRO_CONFIG_PATH") } returns null
         every { fileSystemHandler.readFile(configFilePath) } returns configurationFile
         every { environment.userHome() } returns "/home/pedreiro"
 
@@ -35,6 +43,7 @@ class ConfigurationManagerShould {
 
     @Test
     fun `throw exception when configuration is not found`() {
+        every { environment.variable("PEDREIRO_CONFIG_PATH") } returns null
         every { environment.userHome() } returns "/home/pedreiro"
         every { fileSystemHandler.readFile(configFilePath) } returns null
 
@@ -43,5 +52,16 @@ class ConfigurationManagerShould {
         assertThrows<ConfigurationNotFound> {
             configurationManager.loadConfiguration()
         }
+    }
+
+    @Test
+    internal fun `look for environment variable with configuration file path`() {
+        every { environment.variable("PEDREIRO_CONFIG_PATH") } returns configFilePath
+        every { fileSystemHandler.readFile(configFilePath) } returns configurationFile
+
+        val configurationManager = ConfigurationManager(fileSystemHandler, environment, consoleHandler)
+        val loadedConfiguration: PedreiroConfiguration = configurationManager.loadConfiguration()
+
+        assertThat(loadedConfiguration).isEqualTo(configuration)
     }
 }
