@@ -6,7 +6,7 @@ interface Task {
 
 data class Tasks(val tasks: List<Task>) {
     companion object {
-        fun from(tasks: List<Task>) = Tasks(tasks)
+        fun of(tasks: List<Task>) = Tasks(tasks)
     }
 
     fun forEach(action: (Task) -> Unit) {

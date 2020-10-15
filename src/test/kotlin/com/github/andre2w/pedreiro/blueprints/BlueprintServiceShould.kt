@@ -59,7 +59,7 @@ class BlueprintServiceShould {
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
-        val tasks = Tasks.from(
+        val tasks = Tasks.of(
             listOf(
                 CreateFolder(
                     "project",
@@ -114,7 +114,7 @@ class BlueprintServiceShould {
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
-        val tasks = Tasks.from(
+        val tasks = Tasks.of(
             CreateFolder(
                 "project",
                 fileSystemHandler,
@@ -151,7 +151,7 @@ class BlueprintServiceShould {
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
-        val tasks = Tasks.from(
+        val tasks = Tasks.of(
             CreateFolder(
                 "test-command",
                 fileSystemHandler,
@@ -195,7 +195,7 @@ class BlueprintServiceShould {
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
 
-        val expectedTasks = Tasks.from(
+        val expectedTasks = Tasks.of(
             CreateFile(
                 "build.gradle",
                 "id 'kotlin'",
@@ -215,7 +215,7 @@ class BlueprintServiceShould {
         every { consoleHandler.currentPlatform() } returns platform
 
         val loadedTasks = blueprintService.loadBlueprint(arguments)
-        val expectedTasks = Tasks.from(
+        val expectedTasks = Tasks.of(
             ExecuteCommand(command, "", processExecutor, environment)
         )
         assertThat(loadedTasks).isEqualTo(expectedTasks)

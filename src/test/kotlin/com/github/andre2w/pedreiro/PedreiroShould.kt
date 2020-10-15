@@ -1,6 +1,7 @@
 package com.github.andre2w.pedreiro
 
 import com.github.andre2w.pedreiro.blueprints.BlueprintService
+import com.github.andre2w.pedreiro.tasks.CreateFolder
 import com.github.andre2w.pedreiro.tasks.Tasks
 import io.mockk.every
 import io.mockk.mockk
@@ -9,19 +10,24 @@ import org.junit.jupiter.api.Test
 
 class PedreiroShould {
 
+    private val createFolder = mockk<CreateFolder>(relaxUnitFun = true)
+    private val createChildFolder = mockk<CreateFolder>(relaxUnitFun = true)
+
     @Test
     internal fun `load blueprint and execute tasks`() {
         val blueprintService = mockk<BlueprintService>()
-        val scaffoldingService = mockk<ScaffoldingService>(relaxUnitFun = true)
         val arguments = Arguments("test-blueprint")
-        val tasks = Tasks(emptyList())
+        val tasks = Tasks.of(listOf(
+                createFolder,
+                createChildFolder
+        ))
         every { blueprintService.loadBlueprint(arguments) } returns tasks
 
-        val pedreiro = Pedreiro(blueprintService, scaffoldingService)
+        val pedreiro = Pedreiro(blueprintService)
         pedreiro.build(arguments)
 
         verify {
-            scaffoldingService.execute(tasks)
+            tasks.forEach { task -> task.execute() }
         }
     }
 }

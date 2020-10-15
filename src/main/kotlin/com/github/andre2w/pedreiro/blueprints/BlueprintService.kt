@@ -25,7 +25,7 @@ class BlueprintService(
         }
         return toParsingObject(blueprintTasks)
             .map { taskFactory.create(it.node, it.level, blueprint) }
-            .let(Tasks.Companion::from)
+            .let(Tasks.Companion::of)
     }
 
     private fun YamlNode.Object.textValue(field: String): String {
