@@ -17,10 +17,12 @@ class PedreiroShould {
     internal fun `load blueprint and execute tasks`() {
         val blueprintService = mockk<BlueprintService>()
         val arguments = Arguments("test-blueprint")
-        val tasks = Tasks.of(listOf(
+        val tasks = Tasks.of(
+            listOf(
                 createFolder,
                 createChildFolder
-        ))
+            )
+        )
         every { blueprintService.loadBlueprint(arguments) } returns tasks
 
         val pedreiro = Pedreiro(blueprintService)

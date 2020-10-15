@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 class Pedreiro(
-        private val blueprintService: BlueprintService
+    private val blueprintService: BlueprintService
 ) {
 
     fun build(arguments: Arguments) {
