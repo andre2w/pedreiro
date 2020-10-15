@@ -69,7 +69,7 @@ This is a example of starting a simple Kotlin project with gradle.
 
 And finally we can run the template with the command:
 
-```shell script
+```shell
 pedreiro kotlin-gradle -a "project_name=kata" -a "project_group=com.github.andre2w"
 ```
 
@@ -171,7 +171,7 @@ Handlebars and you declare the variable between double curly braces.
 
 When calling the application you can pass how many values using the `-a` or `--arg` flags. Example:
 
-```shell script
+```shell
 pedreiro test -a "project_name=pedeiro" --arg "group=com.github.andre2w"
 ```
 
@@ -321,6 +321,7 @@ Install GraalVM using SDKMAN or Brew.
 ### Building the application
 
 After installing GraalVM and native-image you can go to the root of the project and execute (the wildcard will probably not work in Windows environments):
+
 ```
 native-image --static --no-server -cp build/libs/pedreiro-*-all.jar
 ```
