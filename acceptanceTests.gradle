@@ -1,0 +1,58 @@
+
+configurations {
+    acceptanceTestCompile.extendsFrom testCompile
+    acceptanceTestRuntime.extendsFrom testRuntime
+}
+
+sourceSets {
+    acceptanceTest {
+        kotlin {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file("src/acceptanceTest/kotlin")
+        }
+        resources.srcDir file("src/acceptanceTest/resources")
+    }
+}
+
+dependencies {
+    acceptanceTestImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    acceptanceTestImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    acceptanceTestImplementation("org.junit.jupiter:junit-jupiter-api")
+    acceptanceTestImplementation("io.micronaut.test:micronaut-test-junit5")
+    acceptanceTestRuntime("org.junit.jupiter:junit-jupiter-engine")
+    acceptanceTestImplementation("info.picocli:picocli")
+    acceptanceTestImplementation("io.micronaut.picocli:micronaut-picocli")
+    acceptanceTestImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
+    acceptanceTestImplementation("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
+    acceptanceTestImplementation("org.assertj:assertj-core:3.11.1")
+    acceptanceTestImplementation("io.mockk:mockk:1.9.3.kotlin12")
+    acceptanceTestImplementation("io.micronaut.views:micronaut-views-handlebars")
+}
+
+task acceptanceTest(type: Test) {
+    testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
+    classpath = sourceSets.acceptanceTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
+
+acceptanceTest {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
+
+compileAcceptanceTestKotlin {
+    kotlinOptions {
+        jvmTarget = '11'
+        javaParameters = true
+    }
+}
+
+idea {
+    module {
+        testSourceDirs += project.sourceSets.acceptanceTest.kotlin.srcDirs
+        testSourceDirs += project.sourceSets.acceptanceTest.resources.srcDirs
+    }
+}

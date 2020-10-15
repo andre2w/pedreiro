@@ -1,12 +1,14 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.3.72"
-    id "org.jetbrains.kotlin.kapt" version "1.3.72"
-    id "org.jetbrains.kotlin.plugin.allopen" version "1.3.72"
+    id "org.jetbrains.kotlin.jvm" version "1.4.10"
+    id "org.jetbrains.kotlin.kapt" version "1.4.10"
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.4.10"
     id "com.github.johnrengelman.shadow" version "6.0.0"
     id "application"
     id 'idea'
-    id "org.jmailen.kotlinter" version "2.4.1"
+    id "org.jmailen.kotlinter" version "3.2.0"
 }
+
+apply from: 'acceptanceTests.gradle'
 
 version "0.1"
 group "com.github.andre2w"
@@ -20,24 +22,12 @@ configurations {
     // for dependencies that are needed for development only
     developmentOnly
 
-    acceptanceTestCompile.extendsFrom testCompile
-    acceptanceTestRuntime.extendsFrom testRuntime
-
     integrationTestCompile.extendsFrom testCompile
     integrationTestRuntime.extendsFrom testRuntime
 }
 
 
 sourceSets {
-    acceptanceTest {
-        kotlin {
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
-            srcDir file("src/acceptanceTest/kotlin")
-        }
-        resources.srcDir file("src/acceptanceTest/resources")
-    }
-
     integrationTest {
         kotlin {
             compileClasspath += main.output + test.output
@@ -87,26 +77,9 @@ dependencies {
     integrationTestImplementation("io.micronaut.test:micronaut-test-junit5")
     integrationTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     integrationTestImplementation("org.assertj:assertj-core:3.11.1")
-
-    acceptanceTestImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
-    acceptanceTestImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    acceptanceTestImplementation("org.junit.jupiter:junit-jupiter-api")
-    acceptanceTestImplementation("io.micronaut.test:micronaut-test-junit5")
-    acceptanceTestRuntime("org.junit.jupiter:junit-jupiter-engine")
-    acceptanceTestImplementation("info.picocli:picocli")
-    acceptanceTestImplementation("io.micronaut.picocli:micronaut-picocli")
-    acceptanceTestImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
-    acceptanceTestImplementation("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
-    acceptanceTestImplementation("org.assertj:assertj-core:3.11.1")
-    acceptanceTestImplementation("io.mockk:mockk:1.9.3.kotlin12")
-    acceptanceTestImplementation("io.micronaut.views:micronaut-views-handlebars")
 }
 
-task acceptanceTest(type: Test) {
-    testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
-    classpath = sourceSets.acceptanceTest.runtimeClasspath
-    outputs.upToDateWhen { false }
-}
+
 task integrationTest(type: Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
@@ -124,12 +97,7 @@ test {
         events("passed", "skipped", "failed")
     }
 }
-acceptanceTest {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
-    }
-}
+
 integrationTest {
     useJUnitPlatform()
     testLogging {
@@ -157,12 +125,7 @@ compileTestKotlin {
         javaParameters = true
     }
 }
-compileAcceptanceTestKotlin {
-    kotlinOptions {
-        jvmTarget = '11'
-        javaParameters = true
-    }
-}
+
 compileIntegrationTestKotlin {
     kotlinOptions {
         jvmTarget = '11'
@@ -195,21 +158,16 @@ tasks.withType(JavaExec) {
     }
 }
 
+idea {
+    module {
+        testSourceDirs += project.sourceSets.integrationTest.kotlin.srcDirs
+        testSourceDirs += project.sourceSets.integrationTest.resources.srcDirs
+    }
+}
+
+
 check.dependsOn integrationTest
 integrationTest.mustRunAfter test
 
 check.dependsOn acceptanceTest
 acceptanceTest.mustRunAfter integrationTest
-
-idea {
-    module {
-        testSourceDirs += project.sourceSets.integrationTest.kotlin.srcDirs
-        testSourceDirs += project.sourceSets.integrationTest.resources.srcDirs
-        testSourceDirs += project.sourceSets.acceptanceTest.kotlin.srcDirs
-        testSourceDirs += project.sourceSets.acceptanceTest.resources.srcDirs
-    }
-}
-
-kotlinter {
-    disabledRules = ["no-wildcard-imports"]
-}
