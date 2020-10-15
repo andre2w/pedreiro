@@ -6,7 +6,9 @@ import com.github.andre2w.pedreiro.blueprints.BlueprintParsingException
 import com.github.andre2w.pedreiro.configuration.ConfigurationNotFound
 import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import io.micronaut.configuration.picocli.PicocliRunner
-import picocli.CommandLine.*
+import picocli.CommandLine.Command
+import picocli.CommandLine.Option
+import picocli.CommandLine.Parameters
 import javax.inject.Inject
 
 @Command(

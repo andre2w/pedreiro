@@ -3,8 +3,15 @@ package com.github.andre2w.pedreiro.blueprints
 import com.github.andre2w.pedreiro.Arguments
 import com.github.andre2w.pedreiro.configuration.ConfigurationManager
 import com.github.andre2w.pedreiro.configuration.PedreiroConfiguration
-import com.github.andre2w.pedreiro.environment.*
-import com.github.andre2w.pedreiro.tasks.*
+import com.github.andre2w.pedreiro.environment.ConsoleHandler
+import com.github.andre2w.pedreiro.environment.FileSystemHandler
+import com.github.andre2w.pedreiro.environment.LocalEnvironment
+import com.github.andre2w.pedreiro.environment.Platform
+import com.github.andre2w.pedreiro.environment.ProcessExecutor
+import com.github.andre2w.pedreiro.tasks.CreateFile
+import com.github.andre2w.pedreiro.tasks.CreateFolder
+import com.github.andre2w.pedreiro.tasks.ExecuteCommand
+import com.github.andre2w.pedreiro.tasks.Tasks
 import com.github.andre2w.pedreiro.yaml.YamlParser
 import io.mockk.clearAllMocks
 import io.mockk.every
