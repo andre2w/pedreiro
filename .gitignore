@@ -12,6 +12,7 @@ out/
 .settings
 .classpath
 pedreiro.exe
+pedreiro*.exe
 pedreiro.exp
 pedreiro.lib
 pedreiro.pdb
