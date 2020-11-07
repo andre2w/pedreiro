@@ -71,5 +71,4 @@ class SingleFileLoaderShould {
             singleFileLoader.loadFrom(filepath, Arguments("blueprint"))
         }
     }
-
 }
