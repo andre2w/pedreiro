@@ -7,9 +7,8 @@ import javax.inject.Singleton
 @Singleton
 class HandlebarsFactory {
 
-    fun withBaseFolder(baseFolder: String) : Handlebars {
+    fun withBaseFolder(baseFolder: String): Handlebars {
         val fileTemplateLoader = FileTemplateLoader(baseFolder, "")
         return Handlebars(fileTemplateLoader)
     }
-
 }

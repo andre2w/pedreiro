@@ -10,9 +10,9 @@ import org.yaml.snakeyaml.Yaml
 import java.io.FileNotFoundException
 
 class FolderLoader(
-        private val consoleHandler: ConsoleHandler,
-        private val fileSystemHandler: FileSystemHandler,
-        private val handlebars: Handlebars = Handlebars()
+    private val consoleHandler: ConsoleHandler,
+    private val fileSystemHandler: FileSystemHandler,
+    private val handlebars: Handlebars = Handlebars()
 ) : BlueprintLoader {
 
     private val yaml = Yaml()
@@ -41,15 +41,15 @@ class FolderLoader(
     private fun loadExtraFiles(blueprintPath: String, arguments: Arguments): Map<String, String> {
         val extraFiles = fileSystemHandler.listFilesIn(blueprintPath)
         return extraFiles.asSequence()
-                .filter { file -> file !in excludedFiles }
-                .map { file -> removeBlueprintPath(file, blueprintPath) }
-                .map { file -> Pair(file, readAndParse(file, arguments)) }
-                .onEach { file -> consoleHandler.printDebug("Loaded ${file.first} from ${file.second}") }
-                .toMap()
+            .filter { file -> file !in excludedFiles }
+            .map { file -> removeBlueprintPath(file, blueprintPath) }
+            .map { file -> Pair(file, readAndParse(file, arguments)) }
+            .onEach { file -> consoleHandler.printDebug("Loaded ${file.first} from ${file.second}") }
+            .toMap()
     }
 
     private fun removeBlueprintPath(file: String, blueprintPath: String) =
-            file.substring(blueprintPath.length + 1)
+        file.substring(blueprintPath.length + 1)
 
     private fun readAndParse(file: String, arguments: Arguments): String {
         try {
@@ -58,5 +58,4 @@ class FolderLoader(
             throw BlueprintParsingException("Failed to load the file: $file")
         }
     }
-
 }

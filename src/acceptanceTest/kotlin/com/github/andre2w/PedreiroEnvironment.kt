@@ -15,15 +15,15 @@ import io.mockk.every
 import io.mockk.mockk
 
 class PedreiroEnvironment(
-        private val fixtures: FixtureLoader,
-        val fileSystemHandler: FileSystemHandler = mockk(relaxUnitFun = true),
-        val environment: LocalEnvironment = mockk(relaxUnitFun = true),
-        val consoleHandler: ConsoleHandler = mockk(relaxUnitFun = true),
-        val processExecutor: ProcessExecutor = mockk(relaxUnitFun = true),
-        val baseDir: String = "/home/user/projects",
-        val homeDir: String = "/home/user/pedreiro",
-        val configurationPath: String = "$homeDir/.pedreiro/configuration.yaml",
-        private val blueprintsPath: String = "/home/user/pedreiro/.pedreiro/blueprints"
+    private val fixtures: FixtureLoader,
+    val fileSystemHandler: FileSystemHandler = mockk(relaxUnitFun = true),
+    val environment: LocalEnvironment = mockk(relaxUnitFun = true),
+    val consoleHandler: ConsoleHandler = mockk(relaxUnitFun = true),
+    val processExecutor: ProcessExecutor = mockk(relaxUnitFun = true),
+    val baseDir: String = "/home/user/projects",
+    val homeDir: String = "/home/user/pedreiro",
+    val configurationPath: String = "$homeDir/.pedreiro/configuration.yaml",
+    private val blueprintsPath: String = "/home/user/pedreiro/.pedreiro/blueprints"
 ) {
 
     private val ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)
@@ -40,7 +40,7 @@ class PedreiroEnvironment(
         every { environment.variable("PEDREIRO_CONFIG_PATH") } returns null
         every { handlebarsFactory.withBaseFolder(any()) }.answers { Handlebars(ClassPathTemplateLoader(firstArg(), "")) }
         every { fileSystemHandler.readFile(configurationPath) } returns fixtures("configuration")
-                .replace("BLUEPRINTS_PATH", blueprintsPath)
+            .replace("BLUEPRINTS_PATH", blueprintsPath)
     }
 
     private fun registerMocks() {

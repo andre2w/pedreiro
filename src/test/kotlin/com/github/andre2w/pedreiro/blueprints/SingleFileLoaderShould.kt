@@ -21,7 +21,7 @@ class SingleFileLoaderShould {
     private val configuration = PedreiroConfiguration("/home/user/pedreiro/.pedreiro/blueprints")
     private val consoleHandler = mockk<ConsoleHandler>(relaxUnitFun = true)
     private val blueprintTemplate =
-            """
+        """
         ---
         - type: folder
           name: "{{ project_name }}"
@@ -31,7 +31,7 @@ class SingleFileLoaderShould {
         """.trimIndent()
 
     private val parsedTemplate =
-            """
+        """
         ---
         - type: folder
           name: "test"
@@ -47,7 +47,6 @@ class SingleFileLoaderShould {
         clearAllMocks()
         every { configurationManager.loadConfiguration() } returns configuration
     }
-
 
     @Test
     fun `read yaml blueprint from file system parsing variables`() {

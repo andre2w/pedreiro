@@ -25,9 +25,9 @@ class BlueprintReader(
     }
 
     private fun getLoader(blueprintPath: String): BlueprintLoader =
-            if (fileSystemHandler.isFolder(blueprintPath)) {
-                FolderLoader(consoleHandler, fileSystemHandler, handlebarsFactory.withBaseFolder(blueprintPath))
-            } else {
-                SingleFileLoader(consoleHandler, fileSystemHandler)
-            }
+        if (fileSystemHandler.isFolder(blueprintPath)) {
+            FolderLoader(consoleHandler, fileSystemHandler, handlebarsFactory.withBaseFolder(blueprintPath))
+        } else {
+            SingleFileLoader(consoleHandler, fileSystemHandler)
+        }
 }
