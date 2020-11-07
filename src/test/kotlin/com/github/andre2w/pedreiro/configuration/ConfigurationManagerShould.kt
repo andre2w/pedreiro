@@ -14,7 +14,7 @@ import org.junit.jupiter.api.assertThrows
 class ConfigurationManagerShould {
 
     private val blueprintsFolder = "/home/pedreiro/.pedreiro/blueprints"
-    private val configFilePath = "/home/pedreiro/.pedreiro/configuration.yml"
+    private val configFilePath = "/home/pedreiro/.pedreiro/configuration.yaml"
     private val configurationFile =
         """
         blueprintsFolder: "$blueprintsFolder"

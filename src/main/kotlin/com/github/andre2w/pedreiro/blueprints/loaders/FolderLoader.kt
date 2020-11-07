@@ -16,30 +16,20 @@ class FolderLoader(
     private val yaml = Yaml()
     private val handlebars = Handlebars()
 
-     private val excludedFiles = setOf("blueprint.yml", "variables.yml")
+     private val excludedFiles = setOf("blueprint.yaml", "variables.yaml")
 
     override fun loadFrom(path: String, arguments: Arguments): Blueprint {
         val mergedArguments = readVariables(path, arguments)
-
-        val blueprint = loadFromFile("$path/blueprint", mergedArguments)
+        consoleHandler.printDebug("Reading from folder: $path")
+        val blueprint = readAndParse(path, "blueprint.yaml", mergedArguments)
+        consoleHandler.print("Creating project from blueprint folder $path")
         val extraFiles = loadExtraFiles(path, mergedArguments)
-
         return Blueprint(blueprint, extraFiles)
-    }
-
-    private fun loadFromFile(blueprintPath: String, arguments: Arguments): String {
-        val blueprint = readFile("$blueprintPath.yml")
-                ?: readFile("$blueprintPath.yaml")
-                ?: throw BlueprintParsingException("Failed to read blueprint ${arguments.blueprintName}")
-
-        consoleHandler.print("Creating project from blueprint ${blueprint.second}")
-
-        return parseTemplate(blueprint.first, arguments)
     }
 
     private fun readVariables(blueprintPath: String, arguments: Arguments): Arguments {
         return try {
-            val variablesFile = loadFromFile("$blueprintPath/variables", arguments)
+            val variablesFile = readAndParse(blueprintPath, "variables.yaml", arguments)
             val variables = yaml.load<Map<String, String>>(variablesFile)
             arguments.mergeWith(variables)
         } catch (err: BlueprintParsingException) {
@@ -49,33 +39,21 @@ class FolderLoader(
 
     private fun loadExtraFiles(blueprintPath: String, arguments: Arguments): Map<String, String> {
         val extraFiles = fileSystemHandler.listFilesIn(blueprintPath)
-
         return extraFiles.asSequence()
-                .filter { file -> file !in excludedFiles}
-                .map { file -> readExtraFile(blueprintPath, file, arguments) }
+                .filter { file -> file !in excludedFiles }
+                .map { file -> Pair(file, readAndParse(blueprintPath, file, arguments)) }
+                .onEach { file -> consoleHandler.printDebug("Loaded ${file.first} from ${file.second}") }
                 .toMap()
     }
 
-    private fun readExtraFile(blueprintPath: String, file: String, arguments: Arguments): Pair<String, String> {
+    private fun readAndParse(blueprintPath: String, file: String, arguments: Arguments): String {
         val extraFileTemplate = fileSystemHandler.readFile("$blueprintPath/$file")
                 ?: throw BlueprintParsingException("Failed to read file $file")
-
-        val extraFile = parseTemplate(extraFileTemplate, arguments)
-
-        return Pair(file, extraFile)
+        return parseTemplate(extraFileTemplate, arguments)
     }
 
     private fun parseTemplate(blueprintTemplate: String, arguments: Arguments) : String =
         handlebars
             .compileInline(blueprintTemplate)
             .apply(arguments.variables)
-
-    private fun readFile(blueprintPath: String): Pair<String, String>? {
-        consoleHandler.printDebug("Reading from file: $blueprintPath")
-        return fileSystemHandler.readFile(blueprintPath)?.let {
-            Pair(it, blueprintPath)
-        }
-    }
-
-
 }

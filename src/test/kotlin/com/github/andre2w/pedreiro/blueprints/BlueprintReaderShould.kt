@@ -51,7 +51,7 @@ class BlueprintReaderShould {
     fun `read yaml blueprint from file system parsing variables`() {
         val arguments = Arguments("test", mapOf("project_name" to "test"))
         val filepath = "/home/user/pedreiro/.pedreiro/blueprints/test"
-        every { fileSystemHandler.readFile("$filepath.yml") } returns blueprintTemplate
+        every { fileSystemHandler.readFile("$filepath.yaml") } returns blueprintTemplate
         every { fileSystemHandler.isFolder(filepath) } returns false
 
         val blueprint = blueprintReader.read(arguments)
@@ -62,7 +62,7 @@ class BlueprintReaderShould {
     @Test
     fun `throw exception in case blueprint is not found`() {
         val filepath = "/home/user/pedreiro/.pedreiro/blueprints/test"
-        every { fileSystemHandler.readFile("$filepath.yml") } returns null
+        every { fileSystemHandler.readFile("$filepath.yaml") } returns null
         every { fileSystemHandler.readFile("$filepath.yaml") } returns null
         every { fileSystemHandler.isFolder(filepath) } returns false
 
@@ -75,7 +75,7 @@ class BlueprintReaderShould {
     internal fun `read blueprint with yaml extension`() {
         val arguments = Arguments("test", mapOf("project_name" to "test"))
         val filepath = "/home/user/pedreiro/.pedreiro/blueprints/test"
-        every { fileSystemHandler.readFile("$filepath.yml") } returns null
+        every { fileSystemHandler.readFile("$filepath.yaml") } returns null
         every { fileSystemHandler.readFile("$filepath.yaml") } returns parsedTemplate
         every { fileSystemHandler.isFolder(filepath) } returns false
 
@@ -101,10 +101,10 @@ class BlueprintReaderShould {
         val arguments = Arguments("test")
         val filepath = "/home/user/pedreiro/.pedreiro/blueprints/test"
         every { fileSystemHandler.isFolder(filepath) } returns true
-        every { fileSystemHandler.readFile("$filepath/blueprint.yml") } returns template
+        every { fileSystemHandler.readFile("$filepath/blueprint.yaml") } returns template
         every { fileSystemHandler.readFile("$filepath/build.gradle") } returns buildGradle
-        every { fileSystemHandler.listFilesIn(filepath) } returns listOf("blueprint.yml", "build.gradle")
-        every { fileSystemHandler.readFile("$filepath/variables.yml") } returns null
+        every { fileSystemHandler.listFilesIn(filepath) } returns listOf("blueprint.yaml", "build.gradle")
+        every { fileSystemHandler.readFile("$filepath/variables.yaml") } returns null
         every { fileSystemHandler.readFile("$filepath/variables.yaml") } returns null
 
         val blueprint = blueprintReader.read(arguments)
@@ -136,10 +136,10 @@ class BlueprintReaderShould {
         val arguments = Arguments("test", mapOf("kotlin_version" to "1.3.71"))
         val filepath = "/home/user/pedreiro/.pedreiro/blueprints/test"
         every { fileSystemHandler.isFolder(filepath) } returns true
-        every { fileSystemHandler.readFile("$filepath/blueprint.yml") } returns template
+        every { fileSystemHandler.readFile("$filepath/blueprint.yaml") } returns template
         every { fileSystemHandler.readFile("$filepath/build.gradle") } returns buildGradleTemplate
-        every { fileSystemHandler.listFilesIn(filepath) } returns listOf("blueprint.yml", "build.gradle")
-        every { fileSystemHandler.readFile("$filepath/variables.yml") } returns null
+        every { fileSystemHandler.listFilesIn(filepath) } returns listOf("blueprint.yaml", "build.gradle")
+        every { fileSystemHandler.readFile("$filepath/variables.yaml") } returns null
         every { fileSystemHandler.readFile("$filepath/variables.yaml") } returns null
 
         val blueprint = blueprintReader.read(arguments)
@@ -165,10 +165,10 @@ class BlueprintReaderShould {
         val filepath = "/home/user/pedreiro/.pedreiro/blueprints/test"
 
         every { fileSystemHandler.isFolder(filepath) } returns true
-        every { fileSystemHandler.readFile("$filepath/blueprint.yml") } returns template
+        every { fileSystemHandler.readFile("$filepath/blueprint.yaml") } returns template
         every { fileSystemHandler.readFile("$filepath/build.gradle") } returns null
-        every { fileSystemHandler.listFilesIn(filepath) } returns listOf("blueprint.yml", "build.gradle")
-        every { fileSystemHandler.readFile("$filepath/variables.yml") } returns null
+        every { fileSystemHandler.listFilesIn(filepath) } returns listOf("blueprint.yaml", "build.gradle")
+        every { fileSystemHandler.readFile("$filepath/variables.yaml") } returns null
         every { fileSystemHandler.readFile("$filepath/variables.yaml") } returns null
 
         assertThrows<BlueprintParsingException> {
@@ -203,10 +203,10 @@ class BlueprintReaderShould {
         val arguments = Arguments("test")
         val filepath = "/home/user/pedreiro/.pedreiro/blueprints/test"
         every { fileSystemHandler.isFolder(filepath) } returns true
-        every { fileSystemHandler.readFile("$filepath/blueprint.yml") } returns template
+        every { fileSystemHandler.readFile("$filepath/blueprint.yaml") } returns template
         every { fileSystemHandler.readFile("$filepath/build.gradle") } returns buildGradleTemplate
-        every { fileSystemHandler.readFile("$filepath/variables.yml") } returns variables
-        every { fileSystemHandler.listFilesIn(filepath) } returns listOf("blueprint.yml", "build.gradle", "variables.yml")
+        every { fileSystemHandler.readFile("$filepath/variables.yaml") } returns variables
+        every { fileSystemHandler.listFilesIn(filepath) } returns listOf("blueprint.yaml", "build.gradle", "variables.yaml")
 
         val blueprint = blueprintReader.read(arguments)
 

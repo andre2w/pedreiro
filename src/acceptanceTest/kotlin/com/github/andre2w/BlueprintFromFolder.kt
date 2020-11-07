@@ -9,7 +9,7 @@ import org.spekframework.spek2.style.specification.describe
 
 object BlueprintFromFolder : Spek({
 
-    val fixtures = FixtureLoader("Folder", ".yml")
+    val fixtures = FixtureLoader("Folder", ".yaml")
     val pedreiroEnvironemnt = PedreiroEnvironment(fixtures)
 
     describe("The Pedriero cli") {
@@ -20,8 +20,8 @@ object BlueprintFromFolder : Spek({
             pedreiroEnvironemnt.setup {
                 val blueprintPath = "$homeDir/.pedreiro/blueprints/$blueprintName"
                 every { fileSystemHandler.isFolder(blueprintPath) } returns true
-                every { fileSystemHandler.readFile("$blueprintPath/blueprint.yml") } returns fixtures("template")
-                every { fileSystemHandler.readFile("$blueprintPath/variables.yml") } returns fixtures("variables")
+                every { fileSystemHandler.readFile("$blueprintPath/blueprint.yaml") } returns fixtures("template")
+                every { fileSystemHandler.readFile("$blueprintPath/variables.yaml") } returns fixtures("variables")
                 every { fileSystemHandler.readFile("$blueprintPath/build.gradle") } returns fixtures("build_gradle_template.txt")
                 every { fileSystemHandler.isFolder("$homeDir/.pedreiro/blueprints/$blueprintName") } returns true
                 every { fileSystemHandler.listFilesIn("$homeDir/.pedreiro/blueprints/$blueprintName") } returns listOf("build.gradle")

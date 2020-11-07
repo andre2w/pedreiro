@@ -9,13 +9,13 @@ import org.spekframework.spek2.style.specification.describe
 
 object BlueprintWithVariables : Spek({
 
-    val fixtures = FixtureLoader("Simple", ".yml")
+    val fixtures = FixtureLoader("Simple", ".yaml")
     val pedreiroEnvironment = PedreiroEnvironment(fixtures)
 
     describe("The Pedreiro cli") {
 
         val blueprintName = "baseGradle"
-        val blueprintPath = "${pedreiroEnvironment.homeDir}/.pedreiro/blueprints/$blueprintName.yml"
+        val blueprintPath = "${pedreiroEnvironment.homeDir}/.pedreiro/blueprints/$blueprintName.yaml"
 
         describe("createting a project form a blueprint with variables") {
             pedreiroEnvironment.setup {

@@ -19,7 +19,7 @@ class PedreiroEnvironment(
     val processExecutor: ProcessExecutor = mockk(relaxUnitFun = true),
     val baseDir: String = "/home/user/projects",
     val homeDir: String = "/home/user/pedreiro",
-    val configurationPath: String = "$homeDir/.pedreiro/configuration.yml"
+    val configurationPath: String = "$homeDir/.pedreiro/configuration.yaml"
 ) {
 
     private val ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)

@@ -15,23 +15,16 @@ class SingleFileLoader(
 ) : BlueprintLoader {
 
     override fun loadFrom(path: String, arguments: Arguments): Blueprint {
-        val blueprint = readFile("$path.yml")
-                ?: readFile("$path.yaml")
+        consoleHandler.printDebug("Reading from file: ${path}.yaml")
+
+        val blueprint = fileSystemHandler.readFile("$path.yaml")
                 ?: throw BlueprintParsingException("Failed to read blueprint ${arguments.blueprintName}")
 
-        consoleHandler.print("Creating project from blueprint ${blueprint.second}")
+        consoleHandler.print("Creating project from blueprint ${path}.yaml")
 
         return handlebars
-                .compileInline(blueprint.first)
+                .compileInline(blueprint)
                 .apply(arguments.variables)
                 .let { compiledTemplate -> Blueprint(compiledTemplate) }
     }
-
-    private fun readFile(blueprintPath: String): Pair<String, String>? {
-        consoleHandler.printDebug("Reading from file: $blueprintPath")
-        return fileSystemHandler.readFile(blueprintPath)?.let {
-            Pair(it, blueprintPath)
-        }
-    }
-
 }
