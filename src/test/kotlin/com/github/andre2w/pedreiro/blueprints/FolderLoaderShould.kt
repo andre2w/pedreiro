@@ -8,19 +8,20 @@ import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class BlueprintReaderShould {
+class FolderLoaderShould {
+
 
     private val fileSystemHandler = mockk<FileSystemHandler>()
     private val configurationManager = mockk<ConfigurationManager>()
     private val configuration = PedreiroConfiguration("/home/user/pedreiro/.pedreiro/blueprints")
     private val consoleHandler = mockk<ConsoleHandler>(relaxUnitFun = true)
     private val blueprintTemplate =
-        """
+            """
         ---
         - type: folder
           name: "{{ project_name }}"
@@ -30,7 +31,7 @@ class BlueprintReaderShould {
         """.trimIndent()
 
     private val parsedTemplate =
-        """
+            """
         ---
         - type: folder
           name: "test"
@@ -56,7 +57,7 @@ class BlueprintReaderShould {
 
         val blueprint = blueprintReader.read(arguments)
 
-        assertThat(blueprint).isEqualTo(Blueprint(parsedTemplate))
+        Assertions.assertThat(blueprint).isEqualTo(Blueprint(parsedTemplate))
     }
 
     @Test
@@ -75,25 +76,24 @@ class BlueprintReaderShould {
     internal fun `read blueprint with yaml extension`() {
         val arguments = Arguments("test", mapOf("project_name" to "test"))
         val filepath = "/home/user/pedreiro/.pedreiro/blueprints/test"
-        every { fileSystemHandler.readFile("$filepath.yaml") } returns null
         every { fileSystemHandler.readFile("$filepath.yaml") } returns parsedTemplate
         every { fileSystemHandler.isFolder(filepath) } returns false
 
         val blueprint = blueprintReader.read(arguments)
 
-        assertThat(blueprint).isEqualTo(Blueprint(parsedTemplate))
+        Assertions.assertThat(blueprint).isEqualTo(Blueprint(parsedTemplate))
     }
 
     @Test
     internal fun `read blueprint and other files in the folder`() {
         val template =
-            """
+                """
             - type: file
               name: build.gradle
               source: build.gradle
             """.trimIndent()
         val buildGradle =
-            """
+                """
             plugin {
               id 'kotlin'
             }
@@ -110,25 +110,25 @@ class BlueprintReaderShould {
         val blueprint = blueprintReader.read(arguments)
 
         val expectedBlueprint = Blueprint(template, mapOf("build.gradle" to buildGradle))
-        assertThat(blueprint).isEqualTo(expectedBlueprint)
+        Assertions.assertThat(blueprint).isEqualTo(expectedBlueprint)
     }
 
     @Test
     internal fun `substitute variables in extra files`() {
         val template =
-            """
+                """
             - type: file
               name: build.gradle
               source: build.gradle
             """.trimIndent()
         val buildGradleTemplate =
-            """
+                """
             plugin {
               id 'kotlin' version: {{ kotlin_version }}
             }
             """.trimIndent()
         val buildGradle =
-            """
+                """
             plugin {
               id 'kotlin' version: 1.3.71
             }
@@ -145,13 +145,13 @@ class BlueprintReaderShould {
         val blueprint = blueprintReader.read(arguments)
 
         val expectedBlueprint = Blueprint(template, mapOf("build.gradle" to buildGradle))
-        assertThat(blueprint).isEqualTo(expectedBlueprint)
+        Assertions.assertThat(blueprint).isEqualTo(expectedBlueprint)
     }
 
     @Test
     internal fun `throw exception when fail to load extra file`() {
         val template =
-            """
+                """
             - type: file
               name: build.gradle
               source: build.gradle
@@ -179,25 +179,25 @@ class BlueprintReaderShould {
     @Test
     internal fun `read variables file and use the values when reading templates`() {
         val template =
-            """
+                """
             - type: file
               name: build.gradle
               source: build.gradle
             """.trimIndent()
         val buildGradleTemplate =
-            """
+                """
             plugin {
               id 'kotlin' version: {{ kotlin_version }}
             }
             """.trimIndent()
         val buildGradle =
-            """
+                """
             plugin {
               id 'kotlin' version: 1.3.71
             }
             """.trimIndent()
         val variables =
-            """
+                """
             kotlin_version: 1.3.71
             """.trimIndent()
         val arguments = Arguments("test")
@@ -211,6 +211,7 @@ class BlueprintReaderShould {
         val blueprint = blueprintReader.read(arguments)
 
         val expectedBlueprint = Blueprint(template, mapOf("build.gradle" to buildGradle))
-        assertThat(blueprint).isEqualTo(expectedBlueprint)
+        Assertions.assertThat(blueprint).isEqualTo(expectedBlueprint)
     }
+
 }
