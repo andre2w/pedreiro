@@ -21,7 +21,7 @@ object BlueprintFromFolder : Spek({
             pedreiroEnvironemnt.setup {
                 every { fileSystemHandler.isFolder(blueprintPath) } returns true
                 every { fileSystemHandler.listFilesIn(blueprintPath) } returns
-                    listOf("$blueprintPath/build.gradle", "$blueprintPath/variables.yaml", "$blueprintPath/blueprint.yaml")
+                    listOf("build.gradle", "variables.yaml", "blueprint.yaml")
             }
 
             pedreiroEnvironemnt.execute(arrayOf(blueprintName))

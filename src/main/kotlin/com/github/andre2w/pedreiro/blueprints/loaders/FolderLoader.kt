@@ -42,9 +42,8 @@ class FolderLoader(
         val extraFiles = fileSystemHandler.listFilesIn(blueprintPath)
         return extraFiles.asSequence()
             .filter { file -> file !in excludedFiles }
-            .map { file -> removeBlueprintPath(file, blueprintPath) }
             .map { file -> Pair(file, readAndParse(file, arguments)) }
-            .onEach { file -> consoleHandler.printDebug("Loaded ${file.first} from ${file.second}") }
+            .onEach { file -> consoleHandler.printDebug("Loaded ${file.first} from $blueprintPath/${file.first}") }
             .toMap()
     }
 

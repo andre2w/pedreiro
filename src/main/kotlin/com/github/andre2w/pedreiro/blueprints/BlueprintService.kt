@@ -6,7 +6,7 @@ import com.github.andre2w.pedreiro.yaml.InvalidNodeType
 import com.github.andre2w.pedreiro.yaml.YamlNode
 import com.github.andre2w.pedreiro.yaml.YamlParser
 import org.yaml.snakeyaml.parser.ParserException
-import java.util.*
+import java.util.LinkedList
 import javax.inject.Singleton
 
 @Singleton

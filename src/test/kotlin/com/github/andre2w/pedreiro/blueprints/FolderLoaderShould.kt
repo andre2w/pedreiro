@@ -58,16 +58,13 @@ class FolderLoaderShould {
     fun `read blueprint parsing templates and extra files`() {
         val path = "/templates/happy_path"
         every { fileSystemHandler.listFilesIn(path) } returns listOf(
-            "/templates/happy_path/blueprint.yaml",
-            "/templates/happy_path/build_gradle.txt",
-            "/templates/happy_path/variables.yaml",
+            "blueprint.yaml", "build_gradle.txt", "variables.yaml",
         )
         val handlebars = Handlebars(ClassPathTemplateLoader(path, ""))
         val folderLoader = FolderLoader(consoleHandler, fileSystemHandler, handlebars)
         val arguments = Arguments("blueprint", mapOf("project_name" to "test"))
 
-        val blueprint =
-            folderLoader.loadFrom(path, arguments)
+        val blueprint = folderLoader.loadFrom(path, arguments)
 
         assertThat(blueprint.tasks).isEqualTo(parsedTemplate)
         assertThat(blueprint.fileContentOf("build_gradle.txt")).isEqualTo(parsedBuildGradle)
@@ -77,9 +74,9 @@ class FolderLoaderShould {
     fun `throw exception when blueprint yaml is not available`() {
         val path = "/templates/missing_blueprint"
         every { fileSystemHandler.listFilesIn(path) } returns listOf(
-            "/templates/happy_path/blueprint.yaml",
-            "/templates/happy_path/build_gradle.txt",
-            "/templates/happy_path/variables.yaml",
+            "blueprint.yaml",
+            "build_gradle.txt",
+            "variables.yaml",
         )
         val handlebars = Handlebars(ClassPathTemplateLoader(path, ""))
         val folderLoader = FolderLoader(consoleHandler, fileSystemHandler, handlebars)
@@ -91,9 +88,7 @@ class FolderLoaderShould {
     @Test
     internal fun `throw exception when extra file does not exist`() {
         val path = "/templates/missing_blueprint"
-        every { fileSystemHandler.listFilesIn(path) } returns listOf(
-            "/templates/happy_path/missing.yaml"
-        )
+        every { fileSystemHandler.listFilesIn(path) } returns listOf("missing.yaml")
         val handlebars = Handlebars(ClassPathTemplateLoader(path, ""))
         val folderLoader = FolderLoader(consoleHandler, fileSystemHandler, handlebars)
         val arguments = Arguments("blueprint", mapOf("project_name" to "test"))
