@@ -5,6 +5,9 @@ import com.github.andre2w.pedreiro.environment.ConsoleHandler
 import com.github.andre2w.pedreiro.environment.FileSystemHandler
 import com.github.andre2w.pedreiro.environment.LocalEnvironment
 import com.github.andre2w.pedreiro.environment.ProcessExecutor
+import com.github.andre2w.pedreiro.yaml.HandlebarsFactory
+import com.github.jknack.handlebars.Handlebars
+import com.github.jknack.handlebars.io.ClassPathTemplateLoader
 import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
@@ -19,10 +22,12 @@ class PedreiroEnvironment(
     val processExecutor: ProcessExecutor = mockk(relaxUnitFun = true),
     val baseDir: String = "/home/user/projects",
     val homeDir: String = "/home/user/pedreiro",
-    val configurationPath: String = "$homeDir/.pedreiro/configuration.yml"
+    val configurationPath: String = "$homeDir/.pedreiro/configuration.yaml",
+    private val blueprintsPath: String = "/home/user/pedreiro/.pedreiro/blueprints"
 ) {
 
     private val ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)
+    private val handlebarsFactory = mockk<HandlebarsFactory>()
 
     init {
         registerMocks()
@@ -33,7 +38,9 @@ class PedreiroEnvironment(
         every { environment.currentDir() } returns baseDir
         every { environment.userHome() } returns homeDir
         every { environment.variable("PEDREIRO_CONFIG_PATH") } returns null
+        every { handlebarsFactory.withBaseFolder(any()) }.answers { Handlebars(ClassPathTemplateLoader(firstArg(), "")) }
         every { fileSystemHandler.readFile(configurationPath) } returns fixtures("configuration")
+            .replace("BLUEPRINTS_PATH", blueprintsPath)
     }
 
     private fun registerMocks() {
@@ -41,6 +48,7 @@ class PedreiroEnvironment(
         ctx.registerSingleton(environment)
         ctx.registerSingleton(consoleHandler)
         ctx.registerSingleton(processExecutor)
+        ctx.registerSingleton(handlebarsFactory)
     }
 
     fun execute(args: Array<String>) {

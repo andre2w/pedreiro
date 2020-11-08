@@ -9,22 +9,19 @@ import org.spekframework.spek2.style.specification.describe
 
 object BlueprintFromFolder : Spek({
 
-    val fixtures = FixtureLoader("Folder", ".yml")
-    val pedreiroEnvironemnt = PedreiroEnvironment(fixtures)
+    val fixtures = FixtureLoader("Folder", ".yaml")
+    val blueprintName = "folder-blueprint"
+    val blueprintsFolder = "/Fixtures"
+    val blueprintPath = "$blueprintsFolder/$blueprintName"
+    val pedreiroEnvironemnt = PedreiroEnvironment(fixtures, blueprintsPath = blueprintsFolder)
 
     describe("The Pedriero cli") {
 
-        val blueprintName = "folder-blueprint"
-
         describe("when creating a project from a template in a folder") {
             pedreiroEnvironemnt.setup {
-                val blueprintPath = "$homeDir/.pedreiro/blueprints/$blueprintName"
                 every { fileSystemHandler.isFolder(blueprintPath) } returns true
-                every { fileSystemHandler.readFile("$blueprintPath/blueprint.yml") } returns fixtures("template")
-                every { fileSystemHandler.readFile("$blueprintPath/variables.yml") } returns fixtures("variables")
-                every { fileSystemHandler.readFile("$blueprintPath/build.gradle") } returns fixtures("build_gradle_template.txt")
-                every { fileSystemHandler.isFolder("$homeDir/.pedreiro/blueprints/$blueprintName") } returns true
-                every { fileSystemHandler.listFilesIn("$homeDir/.pedreiro/blueprints/$blueprintName") } returns listOf("build.gradle")
+                every { fileSystemHandler.listFilesIn(blueprintPath) } returns
+                    listOf("build.gradle", "variables.yaml", "blueprint.yaml")
             }
 
             pedreiroEnvironemnt.execute(arrayOf(blueprintName))

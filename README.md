@@ -177,13 +177,13 @@ pedreiro test -a "project_name=pedeiro" --arg "group=com.github.andre2w"
 
 ## Configuration
 
-To application will look for the `configuration.yml` file in a folder called `.pedreiro` in your home dir. 
+To application will look for the `configuration.yaml` file in a folder called `.pedreiro` in your home dir. 
 The configuration file must contain where the application will look for the blueprints. 
 
 Example:
 
 ```yaml
-# ~/andre/.pedreiro/configuration.yml
+# ~/andre/.pedreiro/configuration.yaml
 ---
 blueprintsFolder: /Users/andre/.pedreiro/blueprints
 ```
@@ -196,17 +196,17 @@ In case you want to use a different folder for the configuration you can declare
 ## Blueprint Folder
 
 If your blueprint file is getting too big you can split into multiple files. For that you must create a folder with 
-the name of the blueprint and inside the folder you create the `blueprint.yml` declaring the blueprint.
+the name of the blueprint and inside the folder you create the `blueprint.yaml` declaring the blueprint.
 
-We can split the previous example to a folder. We create a folder named `folderBlueprint` and create the `blueprint.yml`
+We can split the previous example to a folder. We create a folder named `folderBlueprint` and create the `blueprint.yaml`
 inside the folder.
 
 ```
 blueprintTemplate
-└── blueprint.yml
+└── blueprint.yaml
 ``` 
 
-Now we can change the `blueprint.yml` to reference an external `build.gradle` file instead of having the contents inside
+Now we can change the `blueprint.yaml` to reference an external `build.gradle` file instead of having the contents inside
 the blueprint. Use the `source` key passing the name of the original file and add the file to the blueprint folder.
 
 ```yaml
@@ -239,7 +239,7 @@ compileTestKotlin {
 }
 ```
 
-The final `blueprint.yml` file will be
+The final `blueprint.yaml` file will be
 
 ```yaml
 ---
@@ -282,14 +282,14 @@ The final `blueprint.yml` file will be
       command: git commit -m "Initial Commit"
 ```
 
-In case you have multiple files that must have the same value you can create a `variables.yml` and declare all variables there.
+In case you have multiple files that must have the same value you can create a `variables.yaml` and declare all variables there.
 The file will be read first and all the variables substituted, by the end the folder structure will look like:
 
 ```
 blueprintTemplate
-├── blueprint.yml
+├── blueprint.yaml
 ├── build.gradle
-└── variables.yml
+└── variables.yaml
 ``` 
 
 ## Building

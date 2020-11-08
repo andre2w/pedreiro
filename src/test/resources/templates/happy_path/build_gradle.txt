@@ -1,0 +1,3 @@
+plugin {
+    id 'kotlin' version: {{ kotlin_version }}
+}

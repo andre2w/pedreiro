@@ -20,7 +20,7 @@ class ConfigurationManager(
     fun loadConfiguration(): PedreiroConfiguration {
         val configFilePath = (
             environment.variable(configurationPathVariable)
-                ?: environment.userHome() + "/.pedreiro/configuration.yml"
+                ?: environment.userHome() + "/.pedreiro/configuration.yaml"
             )
 
         consoleHandler.printDebug("Reading configuration from file: $configFilePath")

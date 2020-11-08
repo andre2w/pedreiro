@@ -60,7 +60,7 @@ class PedreiroCommandShould {
         val ctx = newPedreiroContext()
         val args = arrayOf("testBlueprint", "--arg", "test=blueprint", "--arg", "other=field", "--arg", "other=field")
         val parsedArguments = parsedArguments()
-        val configFilePath = "/home/users/andre/.pedreiro/configuration.yml"
+        val configFilePath = "/home/users/andre/.pedreiro/configuration.yaml"
         every { pedreiro.build(parsedArguments) } throws ConfigurationNotFound(configFilePath)
 
         PicocliRunner.run(PedreiroCommand::class.java, ctx, *args)

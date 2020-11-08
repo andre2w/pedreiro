@@ -10,13 +10,13 @@ import org.spekframework.spek2.style.specification.describe
 
 object StartingSimpleProject : Spek({
 
-    val fixtures = FixtureLoader("Simple", ".yml")
+    val fixtures = FixtureLoader("Simple", ".yaml")
     val pedreiroEnvironment = PedreiroEnvironment(fixtures)
 
     describe("The Pedreiro cli") {
 
         val blueprintName = "baseGradle"
-        val blueprintPath = "${pedreiroEnvironment.homeDir}/.pedreiro/blueprints/$blueprintName.yml"
+        val blueprintPath = "${pedreiroEnvironment.homeDir}/.pedreiro/blueprints/$blueprintName.yaml"
 
         describe("creating project from a simple blueprint with only folders and files") {
             pedreiroEnvironment.setup {

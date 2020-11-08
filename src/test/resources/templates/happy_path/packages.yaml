@@ -1,0 +1,11 @@
+    - type: folder
+      name: main
+      children:
+        - type: folder
+          name: kotlin
+
+    - type: folder
+      name: main
+      children:
+        - type: folder
+          name: kotlin
